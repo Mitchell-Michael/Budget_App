@@ -56,6 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\Splash.cs" />
     <Compile Include="Activities\Overview.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -9,6 +9,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using System.Threading.Tasks;
 
 namespace BudgetApp
 {
@@ -22,14 +23,6 @@ namespace BudgetApp
         {
             base.OnCreate();
             ServiceContainer.Register<BudgetViewModel>();
-            if (ServiceContainer.Resolve<BudgetViewModel>().BudgetItems.Count == 0)
-            {
-                StartActivity(typeof(Setup));
-            }
-            else
-            {
-                StartActivity(typeof(Overview));
-            }
         }
     }
 }

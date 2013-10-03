@@ -8,7 +8,6 @@ namespace BudgetApp
 {
     public class BudgetViewModel
     {
-        private Context _context;
         private object _lock;
         private Dictionary<string, BudgetItem> _budgetItems;
 
