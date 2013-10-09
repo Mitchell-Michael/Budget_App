@@ -47,7 +47,8 @@
   <ItemGroup>
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
-    <Reference Include="Newtonsoft.Json">
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Components\json.net-4.5.11\lib\android\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -103,6 +104,9 @@
       <Visible>False</Visible>
       <Version>4.5.11</Version>
     </XamarinComponentReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Adapters\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
