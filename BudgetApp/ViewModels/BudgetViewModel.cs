@@ -58,52 +58,5 @@ namespace BudgetApp
                 }
             }
         }
-
-        public class MonthlyExpence : BudgetItem
-        {
-            public MonthlyExpence(decimal netIncome)
-                : base("", netIncome)
-            { }
-        }
-
-        public class BudgetItem
-        {
-            public string Name;
-            public decimal Allocated;
-            public decimal Current;
-
-            public decimal Remaining
-            {
-                get { return Allocated - Current; }
-            }
-
-            List<Expenditure> expenditures;
-
-            public BudgetItem(string name, decimal allocated)
-            {
-                this.Allocated = allocated;
-                Current = allocated;
-                this.Name = name;
-            }
-
-            public void AddExpenditure(Expenditure expenditure)
-            {
-                expenditures.Add(expenditure);
-                Current -= expenditure.Amount;
-            }
-
-            public void RemoveExpenditure(Expenditure expenditure)
-            {
-                expenditures.Remove(expenditure);
-                Current += expenditure.Amount;
-            }
-        }
-
-        public class Expenditure
-        {
-            public string Description { get; set; }
-            public DateTime DateRecorded { get; set; }
-            public decimal Amount { get; set; }
-        }
     }
 }

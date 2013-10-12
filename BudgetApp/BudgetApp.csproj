@@ -64,10 +64,14 @@
     <Compile Include="Activities\Setup.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Adapters\SetupListExpenditureAdapter.cs" />
+    <Compile Include="ViewModels\BudgetItem.cs" />
     <Compile Include="ViewModels\BudgetViewModel.cs" />
     <Compile Include="Activities\MainApplication.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\Expenditure.cs" />
+    <Compile Include="ViewModels\MonthlyExpense.cs" />
     <Compile Include="ViewModels\ServiceContainer.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -105,9 +109,7 @@
       <Version>4.5.11</Version>
     </XamarinComponentReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Adapters\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
      Other similar extension points exist, see Microsoft.Common.targets.
