@@ -10,7 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 
-namespace BudgetApp.Adapters
+namespace BudgetApp
 {
     public class SetupListExpenditureAdapter : ArrayAdapter<BudgetItem>
     {
@@ -36,6 +36,11 @@ namespace BudgetApp.Adapters
             view.FindViewById<EditText>(Resource.Id.MontlyExpenseAmount).Text = _list[position].Current.ToString("C");
 
             return view;
+        }
+
+        public BudgetItem LastItem()
+        {
+            return _list[Count - 1];
         }
     }
 }

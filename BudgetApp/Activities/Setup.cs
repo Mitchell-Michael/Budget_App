@@ -19,6 +19,9 @@ namespace BudgetApp
         private ListView _setupList;
         private EditText _netIncome;
         private TextView _remaining;
+        private Button _add;
+
+        private readonly BudgetViewModel _budgetViewModel = ServiceContainer.Resolve<BudgetViewModel>();
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -27,10 +30,19 @@ namespace BudgetApp
             SetContentView(Resource.Layout.Setup);
 
             _setupList = FindViewById<ListView>(Resource.Id.Setup_List);
+            _setupList.Adapter = new SetupListExpenditureAdapter(this, Resource.Layout.Setup, _budgetViewModel.Values);
+
+            _add = FindViewById<Button>(Resource.Id.Setup_AddButton);
+
+            _add.Click += delegate
+            {
+
+            };
 
             _remaining = FindViewById<TextView>(Resource.Id.Setup_Remaining);
 
             _netIncome = FindViewById<EditText>(Resource.Id.Setup_NetIncomeAmount);
         }
+
     }
 }

@@ -36,6 +36,12 @@
         android:layout_height="wrap_content"
         android:divider="@android:color/black"
         android:dividerHeight="1dp" />
+    <Button
+        android:id="@+id/Setup_NewItem"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/green"
+        android:text="Add new item" />
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -56,11 +62,13 @@
             android:maxLines="1"
             android:text="Net - montly bills" />
     </LinearLayout>
-  <Button
-    android:id="@+id/Setup_Done"
-    android:layout_width="200dp"
-    android:layout_height="wrap_content"
-    android:background="@color/#805012"
-    android:text="Done"
-    android:textColor="@android:color/white"
+    <Button
+        android:id="@+id/Setup_Done"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/black"
+        android:text="Done"
+        android:textColor="@android:color/white" />
 </LinearLayout>

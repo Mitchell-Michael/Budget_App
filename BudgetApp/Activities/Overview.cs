@@ -6,6 +6,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using System.Collections.Generic;
 
 namespace BudgetApp
 {
@@ -22,7 +23,7 @@ namespace BudgetApp
             SetContentView(Resource.Layout.Main);
 
             _list = FindViewById<ListView>(Resource.Id.BudgetList);
-            _list.Adapter = new SetupExpenditureListAdapter(this, 0, _budgetViewModel.BudgetItems);
+            _list.Adapter = new SetupListExpenditureAdapter(this, 0, new List<BudgetItem>(_budgetViewModel.BudgetItems.Values) );
         }
     }
 }

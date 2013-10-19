@@ -2,6 +2,7 @@ using Android.Content;
 using Android.Preferences;
 using Newtonsoft.Json;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace BudgetApp
@@ -28,12 +29,33 @@ namespace BudgetApp
             }
         }
 
+        public bool IsValid(BudgetItem item)
+        {
+            return item != null && item.Name != string.Empty && item.Allocated > 0;
+        }
+
+        public List<BudgetItem> Values
+        {
+            get
+            {
+                return BudgetItems.Select(t => t.Value) == null ? new List<BudgetItem>() : BudgetItems.Select(t => t.Value).ToList<BudgetItem>();
+            }
+        }
+
+        public List<string> Keys
+        {
+            get
+            {
+                return BudgetItems.Select(t => t.Key) == null ? new List<string>() : BudgetItems.Select(t => t.Key).ToList<string>();
+            }
+        }
+
         public BudgetViewModel()
         {
             _lock = new object();
         }
 
-        public void PushBudget()
+        private void PushBudget()
         {
             lock (_lock)
             {
@@ -48,7 +70,7 @@ namespace BudgetApp
             }
         }
 
-        public void PullBudget()
+        private void PullBudget()
         {
             lock (_lock)
             {
