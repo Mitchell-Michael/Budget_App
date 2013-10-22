@@ -33,7 +33,7 @@ namespace BudgetApp
             }
 
             view.FindViewById<EditText>(Resource.Id.MontlyExpenseName).Text = _list[position].Name;
-            view.FindViewById<EditText>(Resource.Id.MontlyExpenseAmount).Text = _list[position].Current.ToString("C");
+            view.FindViewById<EditText>(Resource.Id.MontlyExpenseAmount).Text = _list[position].Amount.ToString("C");
 
             return view;
         }

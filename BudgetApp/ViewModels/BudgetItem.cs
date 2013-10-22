@@ -12,36 +12,43 @@ using Android.Widget;
 
 namespace BudgetApp
 {
-    public class BudgetItem
+    public class BudgetItem : MonthlyBill
     {
-        public string Name;
-        public decimal Allocated;
-        public decimal Current;
+        public decimal Allocated { get; set; }
 
         public decimal Remaining
         {
-            get { return Allocated - Current; }
+            get { return Allocated - Amount; }
         }
 
         List<Expenditure> expenditures;
 
-        public BudgetItem(string name, decimal allocated)
-        {
-            this.Allocated = allocated;
-            Current = allocated;
-            this.Name = name;
-        }
-
         public void AddExpenditure(Expenditure expenditure)
         {
-            expenditures.Add(expenditure);
-            Current -= expenditure.Amount;
+            if (expenditure.Validate())
+            {
+                expenditures.Add(expenditure);
+                Amount -= expenditure.Amount;
+            }
         }
 
         public void RemoveExpenditure(Expenditure expenditure)
         {
-            expenditures.Remove(expenditure);
-            Current += expenditure.Amount;
+            if (expenditure.Validate())
+            {
+                expenditures.Remove(expenditure);
+                Amount += expenditure.Amount;
+            }
+        }
+
+        public void Reset()
+        {
+            Amount = Allocated;
+        }
+
+        public override bool Validate()
+        {
+            return base.Validate() && Allocated > 0;
         }
     }
 }

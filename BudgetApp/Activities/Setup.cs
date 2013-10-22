@@ -33,16 +33,14 @@ namespace BudgetApp
             _setupList.Adapter = new SetupListExpenditureAdapter(this, Resource.Layout.Setup, _budgetViewModel.Values);
 
             _add = FindViewById<Button>(Resource.Id.Setup_AddButton);
-
             _add.Click += delegate
             {
-
+                ((SetupListExpenditureAdapter)_setupList.Adapter).LastItem();
             };
 
             _remaining = FindViewById<TextView>(Resource.Id.Setup_Remaining);
 
             _netIncome = FindViewById<EditText>(Resource.Id.Setup_NetIncomeAmount);
         }
-
     }
 }

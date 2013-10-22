@@ -1,8 +1,5 @@
-using Android.Content;
 using Android.Preferences;
 using Newtonsoft.Json;
-using System;
-using System.Linq;
 using System.Collections.Generic;
 
 namespace BudgetApp
@@ -10,9 +7,32 @@ namespace BudgetApp
     public class BudgetViewModel
     {
         private object _lock;
-        private Dictionary<string, BudgetItem> _budgetItems;
 
-        public Dictionary<string, BudgetItem> BudgetItems
+        public BudgetViewModel()
+        {
+            _lock = new object();
+        }
+
+        private List<MonthlyBill> _monthlyBills;
+        public List<MonthlyBill> MonthlyBills
+        {
+            get
+            {
+                if (_monthlyBills == null)
+                {
+                    PullBills();
+                }
+                return _monthlyBills;
+            }
+            set
+            {
+                _monthlyBills = value;
+                PushBills();
+            }
+        }
+
+        private List<BudgetItem> _budgetItems;
+        public List<BudgetItem> BudgetItems
         {
             get
             {
@@ -29,30 +49,74 @@ namespace BudgetApp
             }
         }
 
-        public bool IsValid(BudgetItem item)
-        {
-            return item != null && item.Name != string.Empty && item.Allocated > 0;
-        }
-
-        public List<BudgetItem> Values
+        private decimal? _netIncome;
+        public decimal? NetIncome
         {
             get
             {
-                return BudgetItems.Select(t => t.Value) == null ? new List<BudgetItem>() : BudgetItems.Select(t => t.Value).ToList<BudgetItem>();
+                if (_netIncome == null)
+                {
+                    PullIncome();
+                }
+                return _netIncome;
             }
-        }
-
-        public List<string> Keys
-        {
-            get
+            set
             {
-                return BudgetItems.Select(t => t.Key) == null ? new List<string>() : BudgetItems.Select(t => t.Key).ToList<string>();
+                _netIncome = value;
+                PushIncome();
             }
         }
 
-        public BudgetViewModel()
+        private void PushIncome()
         {
-            _lock = new object();
+            lock (_lock)
+            {
+                using (var perfs = PreferenceManager.GetDefaultSharedPreferences(MainApplication.Context))
+                {
+                    using (var edit = perfs.Edit())
+                    {
+                        edit.PutString("Income", JsonConvert.SerializeObject(_netIncome));
+                        edit.Commit();
+                    }
+                }
+            }
+        }
+
+        private void PullIncome()
+        {
+            lock (_lock)
+            {
+                using (var perfs = PreferenceManager.GetDefaultSharedPreferences(MainApplication.Context))
+                {
+                    _netIncome = JsonConvert.DeserializeObject<decimal?>(perfs.GetString("Income", ""));
+                }
+            }
+        }
+
+        private void PushBills()
+        {
+            lock (_lock)
+            {
+                using (var perfs = PreferenceManager.GetDefaultSharedPreferences(MainApplication.Context))
+                {
+                    using (var edit = perfs.Edit())
+                    {
+                        edit.PutString("Bills", JsonConvert.SerializeObject(_monthlyBills));
+                        edit.Commit();
+                    }
+                }
+            }
+        }
+
+        private void PullBills()
+        {
+            lock (_lock)
+            {
+                using (var perfs = PreferenceManager.GetDefaultSharedPreferences(MainApplication.Context))
+                {
+                    _monthlyBills = JsonConvert.DeserializeObject<List<MonthlyBill>>(perfs.GetString("Bills", ""));
+                }
+            }
         }
 
         private void PushBudget()
@@ -76,7 +140,7 @@ namespace BudgetApp
             {
                 using (var perfs = PreferenceManager.GetDefaultSharedPreferences(MainApplication.Context))
                 {
-                    _budgetItems = JsonConvert.DeserializeObject<Dictionary<string, BudgetItem>>(perfs.GetString("Budget", ""));
+                    _budgetItems = JsonConvert.DeserializeObject<List<BudgetItem>>(perfs.GetString("Budget", ""));
                 }
             }
         }
