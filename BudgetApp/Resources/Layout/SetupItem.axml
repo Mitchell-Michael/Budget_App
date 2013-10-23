@@ -11,6 +11,7 @@
         android:layout_weight="1"
         android:hint="Name"
         android:textColor="@android:color/black"
+        android:textSize="@dimen/TextSize"
         android:singleLine="true"
         android:maxLines="1" />
     <EditText
@@ -19,8 +20,9 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textColor="@android:color/black"
+        android:textSize="@dimen/TextSize"
         android:hint="Amount"
         android:singleLine="true"
         android:maxLines="1"
-        android:inputType="number" />
+        android:inputType="numberDecimal" />
 </LinearLayout>

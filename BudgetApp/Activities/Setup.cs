@@ -55,7 +55,17 @@ namespace BudgetApp
             _remaining = FindViewById<TextView>(Resource.Id.Setup_Remaining);
 
             _netIncome = FindViewById<EditText>(Resource.Id.Setup_NetIncomeAmount);
-            _netIncome.Text = _budgetViewModel.NetIncome.GetValueOrDefault(0m).ToString("C");
+            _netIncome.FocusChange += (sender, e) =>
+                {
+                    if (e.HasFocus)
+                    {
+                        _netIncome.Text = string.Empty;
+                    }
+                    else
+                    {
+                        _netIncome.Text = _budgetViewModel.NetIncome.GetValueOrDefault(0m).ToString("C");
+                    }
+                };
         }
 
         public void OnPropertyChanged(BudgetViewModel.Property sender)
