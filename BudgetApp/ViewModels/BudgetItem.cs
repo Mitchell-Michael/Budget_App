@@ -46,7 +46,7 @@ namespace BudgetApp
             Amount = Allocated;
         }
 
-        public override bool Validate()
+        public bool Validate()
         {
             return base.Validate() && Allocated > 0;
         }

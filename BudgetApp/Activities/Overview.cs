@@ -23,7 +23,7 @@ namespace BudgetApp
             SetContentView(Resource.Layout.Main);
 
             _list = FindViewById<ListView>(Resource.Id.BudgetList);
-            _list.Adapter = new SetupListExpenditureAdapter(this, 0, new List<BudgetItem>(_budgetViewModel.BudgetItems.Values) );
+            _list.Adapter = new SetupListExpenditureAdapter(this, 0, new List<MonthlyBill>(_budgetViewModel.BudgetItems) );
         }
     }
 }

@@ -12,13 +12,13 @@ using Android.Widget;
 
 namespace BudgetApp
 {
-    public class SetupListExpenditureAdapter : ArrayAdapter<BudgetItem>
+    public class SetupListExpenditureAdapter : ArrayAdapter<MonthlyBill>
     {
 
-        IList<BudgetItem> _list;
+        IList<MonthlyBill> _list;
         int _id;
 
-        public SetupListExpenditureAdapter(Context context, int resourceId, IList<BudgetItem> list)
+        public SetupListExpenditureAdapter(Context context, int resourceId, IList<MonthlyBill> list)
             : base(context, resourceId, list)
         {
             _list = list;
@@ -38,9 +38,18 @@ namespace BudgetApp
             return view;
         }
 
-        public BudgetItem LastItem()
+        public void AddItem(MonthlyBill item)
         {
-            return _list[Count - 1];
+            _list.Add(item);
+            NotifyDataSetChanged();
+        }
+
+        public override int Count
+        {
+            get
+            {
+                return _list.Count;
+            }
         }
     }
 }

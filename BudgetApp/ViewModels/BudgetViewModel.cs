@@ -1,12 +1,27 @@
 using Android.Preferences;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace BudgetApp
 {
     public class BudgetViewModel
     {
+        public enum Property
+        {
+            NetIncome,
+            MonthlyBill,
+            BudgetItem,
+        }
+
+        public interface IEventListener
+        {
+            void OnPropertyChanged(Property sender);
+        }
+
         private object _lock;
+
+        public event EventHandler PropertyChanged;
 
         public BudgetViewModel()
         {
@@ -22,11 +37,12 @@ namespace BudgetApp
                 {
                     PullBills();
                 }
-                return _monthlyBills;
+                return _monthlyBills == null ? new List<MonthlyBill>() : _monthlyBills;
             }
             set
             {
                 _monthlyBills = value;
+                PropertyChanged.Invoke(Property.MonthlyBill, null);
                 PushBills();
             }
         }
@@ -45,6 +61,7 @@ namespace BudgetApp
             set 
             {
                 _budgetItems = value;
+                PropertyChanged.Invoke(Property.BudgetItem, null);
                 PushBudget();
             }
         }
@@ -63,6 +80,7 @@ namespace BudgetApp
             set
             {
                 _netIncome = value;
+                PropertyChanged.Invoke(Property.NetIncome, null);
                 PushIncome();
             }
         }

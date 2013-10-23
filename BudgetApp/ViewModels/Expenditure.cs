@@ -8,7 +8,7 @@ namespace BudgetApp
         public DateTime DateRecorded { get; set; }
         public decimal Amount { get; set; }
 
-        public override bool Validate()
+        public bool Validate()
         {
             return string.IsNullOrEmpty(Description) && Amount > 0;
         }

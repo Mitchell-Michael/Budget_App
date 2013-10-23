@@ -4,9 +4,9 @@ namespace BudgetApp
     {
         public string Name { get; set; }
 
-        public override bool Validate()
+        public bool Validate()
         {
-            return string.IsNullOrEmpty(Name) && base.Validate();
+            return !string.IsNullOrEmpty(Name) && base.Validate();
         }
     }
 }

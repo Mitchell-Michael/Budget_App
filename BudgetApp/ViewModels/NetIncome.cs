@@ -4,7 +4,7 @@ namespace BudgetApp
     {
         public decimal Amount { get; set; }
 
-        public override bool Validate()
+        public bool Validate()
         {
             return Amount > 0;
         }
