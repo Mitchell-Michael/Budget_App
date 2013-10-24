@@ -16,7 +16,7 @@ namespace BudgetApp
 
         public interface IEventListener
         {
-            void OnPropertyChanged(Property sender);
+            void OnPropertyChanged(object sender, EventArgs e);
         }
 
         private object _lock;
@@ -80,6 +80,7 @@ namespace BudgetApp
             set
             {
                 _netIncome = value;
+                
                 PropertyChanged.Invoke(Property.NetIncome, null);
                 PushIncome();
             }

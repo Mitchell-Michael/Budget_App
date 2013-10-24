@@ -23,6 +23,7 @@
             android:layout_weight="1"
             android:text="Net Income"
             android:textColor="@android:color/black"
+            android:textSize="@dimen/TextSize"
             android:singleLine="true"
             android:maxLines="1" />
         <EditText

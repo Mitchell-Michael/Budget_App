@@ -19,6 +19,7 @@ namespace BudgetApp
         private EditText _netIncome;
         private TextView _remaining;
         private Button _add;
+        private string _lastText = string.Empty;
 
         private SetupListExpenditureAdapter _adapter;
 
@@ -45,7 +46,9 @@ namespace BudgetApp
                 if ((bill = new MonthlyBill() { Name = addName.Text, Amount = decimal.Parse(addAmount.Text) }).Validate())
                 {
                     (_setupList.Adapter as SetupListExpenditureAdapter).AddItem(bill);
-                    _budgetViewModel.MonthlyBills.Add(bill);
+                    var bills = _budgetViewModel.MonthlyBills;
+                    bills.Add(bill);
+                    _budgetViewModel.MonthlyBills = bills;
 
                     addName.Text = string.Empty;
                     addAmount.Text = string.Empty;
@@ -63,14 +66,32 @@ namespace BudgetApp
                     }
                     else
                     {
-                        _netIncome.Text = _budgetViewModel.NetIncome.GetValueOrDefault(0m).ToString("C");
+                        decimal d;
+                        if (decimal.TryParse(_netIncome.Text, out d))
+                        {
+                            _budgetViewModel.NetIncome = d;
+                            _netIncome.Text = d.ToString("C");
+                        }
                     }
                 };
         }
 
-        public void OnPropertyChanged(BudgetViewModel.Property sender)
+        protected override void OnResume()
         {
-            switch (sender)
+            base.OnResume();
+            _budgetViewModel.PropertyChanged += OnPropertyChanged;
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
+            _budgetViewModel.PropertyChanged -= OnPropertyChanged;
+        }
+
+        public void OnPropertyChanged(object sender, EventArgs e)
+        {
+            var property = (BudgetViewModel.Property)sender;
+            switch (property)
             {
                 case BudgetViewModel.Property.NetIncome:
                     {
