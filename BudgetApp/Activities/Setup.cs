@@ -39,6 +39,14 @@ namespace BudgetApp
             _setupList.Adapter = 
                 _adapter = new SetupListExpenditureAdapter(this, Resource.Layout.SetupItem, _budgetViewModel.MonthlyBills);
 
+            _setupList.ItemLongClick += (sender, e) =>
+                {
+                    var layout = _setupList.GetItemAtPosition(e.Position).JavaCast<LinearLayout>();
+                    layout.FindViewById<EditText>(Resource.Id.MontlyExpenseName).Enabled = true;
+                    layout.FindViewById<EditText>(Resource.Id.MontlyExpenseAmount).Enabled = true;
+                    layout.FindViewById<EditText>(Resource.Id.MontlyExpenseName).RequestFocus();
+                };
+
             _add = FindViewById<Button>(Resource.Id.Setup_NewItem);
             _add.Click += delegate
             {
