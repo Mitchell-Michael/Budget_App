@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace BudgetApp
 {
-    [Activity(Label = "Budget App", MainLauncher = true, Icon = "@drawable/icon")]
+    [Activity(Label = "Budget App", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait, WindowSoftInputMode = SoftInput.StateHidden)]
     public class Overview : Activity
     {
         ListView _list;

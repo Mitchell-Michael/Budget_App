@@ -12,7 +12,7 @@ using Android.Widget;
 
 namespace BudgetApp
 {
-    [Activity(Label = "Setup")]
+    [Activity(Label = "Setup", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait, WindowSoftInputMode = SoftInput.StateHidden)]
     public class Setup : Activity, BudgetViewModel.IEventListener
     {
         private ListView _setupList;
@@ -34,6 +34,11 @@ namespace BudgetApp
             var addLayout = FindViewById<LinearLayout>(Resource.Id.Setup_AddLayout);
             var addName = FindViewById<EditText>(Resource.Id.Setup_AddName);
             var addAmount = FindViewById<EditText>(Resource.Id.Setup_AddAmount);
+            addAmount.EditorAction += (sender, e) =>
+                {
+                    addName.RequestFocus();
+                };
+
 
             _setupList = FindViewById<ListView>(Resource.Id.Setup_List);
             _adapter = new SetupListExpenditureAdapter(this, Resource.Layout.SetupItem, _budgetViewModel.MonthlyBills);
@@ -65,9 +70,20 @@ namespace BudgetApp
                 }
             };
 
+            var delete = FindViewById<Button>(Resource.Id.Setup_DeleteItem);
+            delete.Click += delegate
+            {
+                addName.Text = string.Empty;
+                addAmount.Text = string.Empty;
+            };
+
             _remaining = FindViewById<TextView>(Resource.Id.Setup_Remaining);
 
             _netIncome = FindViewById<EditText>(Resource.Id.Setup_NetIncomeAmount);
+            _netIncome.EditorAction += (sender, e) =>
+                {
+                    addName.RequestFocus();
+                };
             _netIncome.FocusChange += (sender, e) =>
                 {
                     if (e.HasFocus)
@@ -82,8 +98,16 @@ namespace BudgetApp
                             _budgetViewModel.NetIncome = d;
                             _netIncome.Text = d.ToString("C");
                         }
+                        else
+                        {
+                            _netIncome.Text = _budgetViewModel.NetIncome.HasValue ? _budgetViewModel.NetIncome.Value.ToString("C") : ((decimal)0m).ToString("C");
+                        }
                     }
                 };
+            FindViewById<Button>(Resource.Id.Setup_Done).Click += delegate
+            {
+                StartActivity(typeof(Overview));
+            };
         }
 
         protected override void OnResume()
