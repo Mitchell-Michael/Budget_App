@@ -36,24 +36,26 @@ namespace BudgetApp
             var addAmount = FindViewById<EditText>(Resource.Id.Setup_AddAmount);
 
             _setupList = FindViewById<ListView>(Resource.Id.Setup_List);
-            _setupList.Adapter = 
-                _adapter = new SetupListExpenditureAdapter(this, Resource.Layout.SetupItem, _budgetViewModel.MonthlyBills);
+            _adapter = new SetupListExpenditureAdapter(this, Resource.Layout.SetupItem, _budgetViewModel.MonthlyBills);
+            _setupList.Adapter = _adapter;
 
             _setupList.ItemLongClick += (sender, e) =>
                 {
-                    var layout = _setupList.GetItemAtPosition(e.Position).JavaCast<LinearLayout>();
-                    layout.FindViewById<EditText>(Resource.Id.MontlyExpenseName).Enabled = true;
-                    layout.FindViewById<EditText>(Resource.Id.MontlyExpenseAmount).Enabled = true;
-                    layout.FindViewById<EditText>(Resource.Id.MontlyExpenseName).RequestFocus();
+                    var bill = _budgetViewModel.MonthlyBills[e.Position];
+                    var bills = _budgetViewModel.MonthlyBills;
+                    bills.RemoveAt(e.Position);
+                    _budgetViewModel.MonthlyBills = bills;
+                    addName.Text = bill.Name;
+                    addName.RequestFocus();
+                    addAmount.Text = bill.Amount.ToString();
                 };
 
             _add = FindViewById<Button>(Resource.Id.Setup_NewItem);
             _add.Click += delegate
             {
                 MonthlyBill bill;
-                if ((bill = new MonthlyBill() { Name = addName.Text, Amount = decimal.Parse(addAmount.Text) }).Validate())
+                if ((bill = new MonthlyBill() { Name = addName.Text, Amount = decimal.Parse(string.IsNullOrEmpty(addAmount.Text) ? "0" : addAmount.Text ) }).Validate())
                 {
-                    (_setupList.Adapter as SetupListExpenditureAdapter).AddItem(bill);
                     var bills = _budgetViewModel.MonthlyBills;
                     bills.Add(bill);
                     _budgetViewModel.MonthlyBills = bills;
@@ -104,25 +106,26 @@ namespace BudgetApp
                 case BudgetViewModel.Property.NetIncome:
                     {
                         _netIncome.Text = _budgetViewModel.NetIncome.GetValueOrDefault(0m).ToString("C");
+                        RemainingInvalidated();
                     }
                     break;
                 case BudgetViewModel.Property.MonthlyBill:
                     {
                         (_setupList.Adapter as SetupListExpenditureAdapter).NotifyDataSetChanged();
-                        decimal c = _budgetViewModel.NetIncome.GetValueOrDefault(0);
-                        foreach (var bill in _budgetViewModel.MonthlyBills)
-                        {
-                            c -= bill.Amount;
-                        }
-                        _remaining.Text = c.ToString("C");
-                    }
-                    break;
-                default:
-                    {
-
+                        RemainingInvalidated();
                     }
                     break;
             }
+        }
+
+        private void RemainingInvalidated()
+        {
+            decimal c = _budgetViewModel.NetIncome.GetValueOrDefault(0);
+            foreach (var bill in _budgetViewModel.MonthlyBills)
+            {
+                c -= bill.Amount;
+            }
+            _remaining.Text = c.ToString("C");
         }
     }
 }

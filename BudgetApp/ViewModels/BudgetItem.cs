@@ -14,6 +14,12 @@ namespace BudgetApp
 {
     public class BudgetItem : MonthlyBill
     {
+
+        public BudgetItem()
+        {
+            expenditures = new List<Expenditure>();
+        }
+
         public decimal Allocated { get; set; }
 
         public decimal Remaining
@@ -46,7 +52,7 @@ namespace BudgetApp
             Amount = Allocated;
         }
 
-        public bool Validate()
+        public override bool Validate()
         {
             return base.Validate() && Allocated > 0;
         }
