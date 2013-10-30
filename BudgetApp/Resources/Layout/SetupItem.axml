@@ -2,31 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    android:focusable="true"
-    android:focusableInTouchMode="true">
-    <EditText
+    android:layout_height="wrap_content">
+    <TextView
         android:id="@+id/MontlyExpenseName"
         android:layout_width="0px"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:hint="Name"
+        android:layout_margin="10dp"
         android:textColor="@android:color/black"
         android:textSize="@dimen/TextSize"
-        android:enabled="false"
         android:singleLine="true"
         android:maxLines="1" />
-    <EditText
+    <TextView
         android:id="@+id/MontlyExpenseAmount"
         android:layout_width="0px"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:enabled="false"
+        android:layout_margin="10dp"
         android:textColor="@android:color/black"
         android:textSize="@dimen/TextSize"
-        android:hint="Amount"
         android:singleLine="true"
-        android:maxLines="1"
-        android:inputType="numberDecimal" />
+        android:maxLines="1" />
 </LinearLayout>

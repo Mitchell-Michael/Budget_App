@@ -65,7 +65,7 @@ namespace BudgetApp
                 {
                     PullBudget();
                 }
-                return _budgetItems;
+                return _budgetItems == null ? new List<BudgetItem>() : _budgetItems;
             }
             set 
             {

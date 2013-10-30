@@ -12,7 +12,7 @@ using Android.Widget;
 
 namespace BudgetApp
 {
-    [Activity(Label = "Setup")]
+    [Activity(Label = "Setup", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait, WindowSoftInputMode = SoftInput.StateHidden)]
     public class Setup : Activity, BudgetViewModel.IEventListener
     {
         private ListView _setupList;
@@ -34,29 +34,25 @@ namespace BudgetApp
             var addLayout = FindViewById<LinearLayout>(Resource.Id.Setup_AddLayout);
             var addName = FindViewById<EditText>(Resource.Id.Setup_AddName);
             var addAmount = FindViewById<EditText>(Resource.Id.Setup_AddAmount);
+            addAmount.EditorAction += (sender, e) =>
+                {
+                    addName.RequestFocus();
+                };
 
             _setupList = FindViewById<ListView>(Resource.Id.Setup_List);
-            _setupList.Adapter = 
-                _adapter = new SetupListExpenditureAdapter(this, Resource.Layout.SetupItem, _budgetViewModel.MonthlyBills);
-            _setupList.ItemsCanFocus = true;
-            _setupList.LongClickable = true;
-            _setupList.ItemLongClick += (sender, e) =>
-            {
-                var layout = sender as LinearLayout;
-                layout.SetBackgroundColor(Resources.GetColor(Android.Resource.Color.BackgroundLight));
-                layout.FindViewById<EditText>(Resource.Id.MontlyExpenseName).Enabled = true;
-                layout.FindViewById<EditText>(Resource.Id.MontlyExpenseAmount).Enabled = true;
-                layout.FindViewById<EditText>(Resource.Id.MontlyExpenseName).RequestFocus();
-            };
+            _adapter = new SetupListExpenditureAdapter(this, Resource.Layout.SetupItem, _budgetViewModel.MonthlyBills);
+            _setupList.Adapter = _adapter;
 
-            _setupList.NothingSelected += (sender, e) =>
-            {
-                var layout = sender as LinearLayout;
-                layout.SetBackgroundColor(Resources.GetColor(Android.Resource.Color.White));
-                layout.FindViewById<EditText>(Resource.Id.MontlyExpenseName).Enabled = false;
-                layout.FindViewById<EditText>(Resource.Id.MontlyExpenseAmount).Enabled = false;
-                addName.RequestFocus();
-            };
+            _setupList.ItemLongClick += (sender, e) =>
+                {
+                    var bill = _budgetViewModel.MonthlyBills[e.Position];
+                    var bills = _budgetViewModel.MonthlyBills;
+                    bills.RemoveAt(e.Position);
+                    _budgetViewModel.MonthlyBills = bills;
+                    addName.Text = bill.Name;
+                    addName.RequestFocus();
+                    addAmount.Text = bill.Amount.ToString();
+                };
 
             _add = FindViewById<Button>(Resource.Id.Setup_NewItem);
             _add.Click += delegate
@@ -78,9 +74,20 @@ namespace BudgetApp
                 }
             };
 
+            var delete = FindViewById<Button>(Resource.Id.Setup_DeleteItem);
+            delete.Click += delegate
+            {
+                addName.Text = string.Empty;
+                addAmount.Text = string.Empty;
+            };
+
             _remaining = FindViewById<TextView>(Resource.Id.Setup_Remaining);
 
             _netIncome = FindViewById<EditText>(Resource.Id.Setup_NetIncomeAmount);
+            _netIncome.EditorAction += (sender, e) =>
+                {
+                    addName.RequestFocus();
+                };
             _netIncome.FocusChange += (sender, e) =>
                 {
                     if (e.HasFocus)
@@ -95,8 +102,16 @@ namespace BudgetApp
                             _budgetViewModel.NetIncome = d;
                             _netIncome.Text = d.ToString("C");
                         }
+                        else
+                        {
+                            _netIncome.Text = _budgetViewModel.NetIncome.HasValue ? _budgetViewModel.NetIncome.Value.ToString("C") : ((decimal)0m).ToString("C");
+                        }
                     }
                 };
+            FindViewById<Button>(Resource.Id.Setup_Done).Click += delegate
+            {
+                StartActivity(typeof(Overview));
+            };
         }
 
         protected override void OnResume()
@@ -119,25 +134,24 @@ namespace BudgetApp
                 case BudgetViewModel.Property.NetIncome:
                     {
                         _netIncome.Text = _budgetViewModel.NetIncome.GetValueOrDefault(0m).ToString("C");
+                        RemainingInvalidated();
                     }
                     break;
                 case BudgetViewModel.Property.MonthlyBill:
                     {
                         (_setupList.Adapter as SetupListExpenditureAdapter).NotifyDataSetChanged();
-                        decimal c = _budgetViewModel.NetIncome.GetValueOrDefault(0);
-                        foreach (var bill in _budgetViewModel.MonthlyBills)
-                        {
-                            c -= bill.Amount;
-                        }
-                        _remaining.Text = c.ToString("C");
-                    }
-                    break;
-                default:
-                    {
-
+                        RemainingInvalidated();
                     }
                     break;
             }
+        }
+
+        private void RemainingInvalidated()
+        {
+            decimal c = _budgetViewModel.NetIncome.GetValueOrDefault(0);
+
+            c -= _budgetViewModel.MonthlyBills.Sum(t => t.Amount);
+            _remaining.Text = c.ToString("C");
         }
     }
 }
