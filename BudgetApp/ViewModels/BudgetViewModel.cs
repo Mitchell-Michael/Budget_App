@@ -2,6 +2,7 @@ using Android.Preferences;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BudgetApp
 {
@@ -26,6 +27,14 @@ namespace BudgetApp
         public BudgetViewModel()
         {
             _lock = new object();
+        }
+
+        public decimal RemainingTotal
+        {
+            get
+            {
+                return NetIncome.Value - MonthlyBills.Sum(t => t.Amount) - BudgetItems.Sum(t=>t.Remaining);
+            }
         }
 
         private List<MonthlyBill> _monthlyBills;

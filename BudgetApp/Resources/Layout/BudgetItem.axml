@@ -8,17 +8,23 @@
         android:layout_margin="10dp"
         android:layout_width="0px"
         android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:textSize="@dimen/TextSize"
+        android:textColor="@android:color/black" />
     <TextView
         android:id="@+id/BudgetAllocated"
         android:layout_margin="10dp"
         android:layout_width="0px"
         android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:textSize="@dimen/TextSize"
+        android:textColor="@android:color/black" />
     <TextView
         android:id="@+id/BudgetRemaining"
         android:layout_margin="10dp"
         android:layout_width="0px"
         android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:textSize="@dimen/TextSize"
+        android:textColor="@android:color/black" />
 </LinearLayout>

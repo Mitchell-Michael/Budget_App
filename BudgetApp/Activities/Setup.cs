@@ -38,28 +38,43 @@ namespace BudgetApp
             _setupList = FindViewById<ListView>(Resource.Id.Setup_List);
             _setupList.Adapter = 
                 _adapter = new SetupListExpenditureAdapter(this, Resource.Layout.SetupItem, _budgetViewModel.MonthlyBills);
-
+            _setupList.ItemsCanFocus = true;
+            _setupList.LongClickable = true;
             _setupList.ItemLongClick += (sender, e) =>
-                {
-                    var layout = _setupList.GetItemAtPosition(e.Position).JavaCast<LinearLayout>();
-                    layout.FindViewById<EditText>(Resource.Id.MontlyExpenseName).Enabled = true;
-                    layout.FindViewById<EditText>(Resource.Id.MontlyExpenseAmount).Enabled = true;
-                    layout.FindViewById<EditText>(Resource.Id.MontlyExpenseName).RequestFocus();
-                };
+            {
+                var layout = sender as LinearLayout;
+                layout.SetBackgroundColor(Resources.GetColor(Android.Resource.Color.BackgroundLight));
+                layout.FindViewById<EditText>(Resource.Id.MontlyExpenseName).Enabled = true;
+                layout.FindViewById<EditText>(Resource.Id.MontlyExpenseAmount).Enabled = true;
+                layout.FindViewById<EditText>(Resource.Id.MontlyExpenseName).RequestFocus();
+            };
+
+            _setupList.NothingSelected += (sender, e) =>
+            {
+                var layout = sender as LinearLayout;
+                layout.SetBackgroundColor(Resources.GetColor(Android.Resource.Color.White));
+                layout.FindViewById<EditText>(Resource.Id.MontlyExpenseName).Enabled = false;
+                layout.FindViewById<EditText>(Resource.Id.MontlyExpenseAmount).Enabled = false;
+                addName.RequestFocus();
+            };
 
             _add = FindViewById<Button>(Resource.Id.Setup_NewItem);
             _add.Click += delegate
             {
-                MonthlyBill bill;
-                if ((bill = new MonthlyBill() { Name = addName.Text, Amount = decimal.Parse(addAmount.Text) }).Validate())
+              MonthlyBill bill;
+                decimal d;
+                if (decimal.TryParse(addAmount.Text, out d))
                 {
-                    (_setupList.Adapter as SetupListExpenditureAdapter).AddItem(bill);
-                    var bills = _budgetViewModel.MonthlyBills;
-                    bills.Add(bill);
-                    _budgetViewModel.MonthlyBills = bills;
+                    if ((bill = new MonthlyBill() { Name = addName.Text, Amount = d }).Validate())
+                    {
+                        (_setupList.Adapter as SetupListExpenditureAdapter).AddItem(bill);
+                        var bills = _budgetViewModel.MonthlyBills;
+                        bills.Add(bill);
+                        _budgetViewModel.MonthlyBills = bills;
 
-                    addName.Text = string.Empty;
-                    addAmount.Text = string.Empty;
+                        addName.Text = string.Empty;
+                        addAmount.Text = string.Empty;
+                    }
                 }
             };
 

@@ -64,6 +64,7 @@
     <Compile Include="Activities\Setup.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Adapters\BudgetItemListAdapter.cs" />
     <Compile Include="Adapters\SetupListExpenditureAdapter.cs" />
     <Compile Include="ViewModels\BudgetItem.cs" />
     <Compile Include="ViewModels\BudgetViewModel.cs" />
@@ -79,7 +80,7 @@
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
-    <AndroidResource Include="Resources\Layout\ListItem.axml">
+    <AndroidResource Include="Resources\Layout\BudgetItem.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\Setup.axml">
@@ -93,7 +94,7 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\Layout\Main.axml" />
+    <AndroidResource Include="Resources\Layout\Overview.axml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Values\Strings.xml">
