@@ -16,9 +16,9 @@ namespace BudgetApp
     public class Setup : Activity, BudgetViewModel.IEventListener
     {
         private ListView _setupList;
-        private EditText _netIncome;
+        private EditText _netIncome, _addAmount, _addName;
         private TextView _remaining;
-        private Button _add;
+        private Button _add, _delete;
         private string _lastText = string.Empty;
 
         private SetupListExpenditureAdapter _adapter;
@@ -32,15 +32,17 @@ namespace BudgetApp
             SetContentView(Resource.Layout.Setup);
 
             var addLayout = FindViewById<LinearLayout>(Resource.Id.Setup_AddLayout);
-            var addName = FindViewById<EditText>(Resource.Id.Setup_AddName);
-            var addAmount = FindViewById<EditText>(Resource.Id.Setup_AddAmount);
-            addAmount.EditorAction += (sender, e) =>
+            _addName = FindViewById<EditText>(Resource.Id.Setup_AddName);
+            _addAmount = FindViewById<EditText>(Resource.Id.Setup_AddAmount);
+            _addAmount.EditorAction += (sender, e) =>
                 {
-                    addName.RequestFocus();
+                    _addName.RequestFocus();
                 };
 
             _setupList = FindViewById<ListView>(Resource.Id.Setup_List);
-            _adapter = new SetupListExpenditureAdapter(this, Resource.Layout.SetupItem, _budgetViewModel.MonthlyBills);
+            var header = FindViewById<TextView>(Resource.Id.Setup_ListHeader);
+            
+            _adapter = new SetupListExpenditureAdapter(this, Resource.Layout.SetupItem, _budgetViewModel.MonthlyBills, ref header);
             _setupList.Adapter = _adapter;
 
             _setupList.ItemLongClick += (sender, e) =>
@@ -49,9 +51,11 @@ namespace BudgetApp
                     var bills = _budgetViewModel.MonthlyBills;
                     bills.RemoveAt(e.Position);
                     _budgetViewModel.MonthlyBills = bills;
-                    addName.Text = bill.Name;
-                    addName.RequestFocus();
-                    addAmount.Text = bill.Amount.ToString();
+                    _adapter.Remove(bill);
+                    _adapter.NotifyDataSetChanged();
+                    _addName.Text = bill.Name;
+                    _addName.RequestFocus();
+                    _addAmount.Text = bill.Amount.ToString();
                 };
 
             _add = FindViewById<Button>(Resource.Id.Setup_NewItem);
@@ -59,26 +63,31 @@ namespace BudgetApp
             {
               MonthlyBill bill;
                 decimal d;
-                if (decimal.TryParse(addAmount.Text, out d))
+                if (decimal.TryParse(_addAmount.Text, out d))
                 {
-                    if ((bill = new MonthlyBill() { Name = addName.Text, Amount = d }).Validate())
+                    if ((bill = new MonthlyBill() { Name = _addName.Text, Amount = d }).Validate())
                     {
                         (_setupList.Adapter as SetupListExpenditureAdapter).AddItem(bill);
                         var bills = _budgetViewModel.MonthlyBills;
                         bills.Add(bill);
                         _budgetViewModel.MonthlyBills = bills;
 
-                        addName.Text = string.Empty;
-                        addAmount.Text = string.Empty;
+                        _addName.Text = string.Empty;
+                        _addAmount.Text = string.Empty;
                     }
                 }
             };
+            _addAmount.EditorAction += (sender, e) =>
+                {
+                    FindViewById<ScrollView>(Resource.Id.Setup_RootLayout).RequestFocus();
+                    UIExtensions.HideKeyboard(this, _add.WindowToken);
+                };
 
-            var delete = FindViewById<Button>(Resource.Id.Setup_DeleteItem);
-            delete.Click += delegate
+            _delete = FindViewById<Button>(Resource.Id.Setup_DeleteItem);
+            _delete.Click += delegate
             {
-                addName.Text = string.Empty;
-                addAmount.Text = string.Empty;
+                _addName.Text = string.Empty;
+                _addAmount.Text = string.Empty;
             };
 
             _remaining = FindViewById<TextView>(Resource.Id.Setup_Remaining);
@@ -86,7 +95,7 @@ namespace BudgetApp
             _netIncome = FindViewById<EditText>(Resource.Id.Setup_NetIncomeAmount);
             _netIncome.EditorAction += (sender, e) =>
                 {
-                    addName.RequestFocus();
+                    _addName.RequestFocus();
                 };
             _netIncome.FocusChange += (sender, e) =>
                 {
@@ -112,6 +121,8 @@ namespace BudgetApp
             {
                 StartActivity(typeof(Overview));
             };
+
+            OnNetIncomeChanged();
         }
 
         protected override void OnResume()
@@ -133,8 +144,7 @@ namespace BudgetApp
             {
                 case BudgetViewModel.Property.NetIncome:
                     {
-                        _netIncome.Text = _budgetViewModel.NetIncome.GetValueOrDefault(0m).ToString("C");
-                        RemainingInvalidated();
+                        OnNetIncomeChanged();
                     }
                     break;
                 case BudgetViewModel.Property.MonthlyBill:
@@ -144,6 +154,23 @@ namespace BudgetApp
                     }
                     break;
             }
+        }
+
+        private void OnNetIncomeChanged()
+        {
+            _netIncome.Text = _budgetViewModel.NetIncome.GetValueOrDefault(0m).ToString("C");
+            if (_budgetViewModel.NetIncome.HasValue)
+            {
+                _add.Enabled = _delete.Enabled = _addAmount.Enabled = _addName.Enabled = true;
+                _remaining.Visibility = ViewStates.Invisible;
+            }
+            else
+            {
+                _add.Enabled = _delete.Enabled = _addAmount.Enabled = _addName.Enabled = false;
+                _remaining.Text = _budgetViewModel.RemainingTotal.ToString("C");
+                _remaining.Visibility = ViewStates.Visible;
+            }
+            RemainingInvalidated();
         }
 
         private void RemainingInvalidated()

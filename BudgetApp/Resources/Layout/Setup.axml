@@ -1,145 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/Setup_RootLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@android:color/white">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center"
-        android:text="Monthly Expenses"
-        android:textSize="@dimen/TextSize"
-        android:textColor="@android:color/black" />
+    android:background="@android:color/white"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
     <LinearLayout
+        android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:orientation="horizontal">
+        android:layout_height="fill_parent">
         <TextView
-            android:layout_width="0px"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Net Income"
-            android:textColor="@android:color/black"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:text="Monthly Expenses"
             android:textSize="@dimen/TextSize"
-            android:singleLine="true"
-            android:maxLines="1" />
-        <EditText
-            android:id="@+id/Setup_NetIncomeAmount"
-            android:layout_width="0px"
+            android:textColor="@android:color/black" />
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Amount"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/TextSize"
-            android:singleLine="true"
-            android:maxLines="1"
-            android:inputType="number" />
-    </LinearLayout>
-    <ListView
-        android:id="@+id/Setup_List"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:divider="@android:color/black"
-        android:dividerHeight="1dp" />
-    <LinearLayout
-        android:id="@+id/Setup_AddLayout"
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp">
-        <EditText
-            android:id="@+id/Setup_AddName"
-            android:layout_width="0px"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Name"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/TextSize"
-            android:singleLine="true"
-            android:maxLines="1" />
-        <EditText
-            android:id="@+id/Setup_AddAmount"
-            android:layout_width="0px"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Amount"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/TextSize"
-            android:singleLine="true"
-            android:maxLines="1"
-            android:inputType="number" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Button
-            android:id="@+id/Setup_NewItem"
-            android:layout_width="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Net Income"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/TextSize"
+                android:singleLine="true"
+                android:maxLines="1" />
+            <EditText
+                android:id="@+id/Setup_NetIncomeAmount"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Amount"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/TextSize"
+                android:singleLine="true"
+                android:maxLines="1"
+                android:inputType="number" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/Setup_ListHeader"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="1"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="2dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            android:background="@color/green"
-            android:text="Add"
-            android:textSize="@dimen/TextSize" />
+            android:textSize="@dimen/TextSize"
+            android:textColor="@android:color/black"
+            android:text="Your Bills"
+            android:singleLine="true"
+            android:maxLines="1" />
+        <ListView
+            android:id="@+id/Setup_List"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:divider="@android:color/black"
+            android:dividerHeight="1dp" />
+        <LinearLayout
+            android:id="@+id/Setup_AddLayout"
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp">
+            <EditText
+                android:id="@+id/Setup_AddName"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Name"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/TextSize"
+                android:singleLine="true"
+                android:maxLines="1" />
+            <EditText
+                android:id="@+id/Setup_AddAmount"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Amount"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/TextSize"
+                android:singleLine="true"
+                android:maxLines="1"
+                android:inputType="numberDecimal" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/Setup_NewItem"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/GreenButtonSelector"
+                android:text="Add"
+                android:textSize="@dimen/TextSize" />
+            <Button
+                android:id="@+id/Setup_DeleteItem"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/RedButtonSelector"
+                android:text="Delete"
+                android:textSize="@dimen/TextSize" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/TextSize"
+                android:singleLine="true"
+                android:maxLines="1"
+                android:text="Remaining" />
+            <TextView
+                android:id="@+id/Setup_Remaining"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/TextSize"
+                android:singleLine="true"
+                android:maxLines="1"
+                android:text="" />
+        </LinearLayout>
         <Button
-            android:id="@+id/Setup_DeleteItem"
-            android:layout_width="0dp"
+            android:id="@+id/Setup_Done"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="1"
-            android:layout_marginLeft="2dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginRight="4dp"
-            android:layout_marginBottom="4dp"
-            android:background="@color/red"
-            android:text="Delete"
-            android:textSize="@dimen/TextSize" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="0px"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="@android:color/black"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/BlackButtonSelector"
             android:textSize="@dimen/TextSize"
-            android:singleLine="true"
-            android:maxLines="1"
-            android:text="Remaining" />
-        <TextView
-            android:id="@+id/Setup_Remaining"
-            android:layout_width="0px"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/TextSize"
-            android:singleLine="true"
-            android:maxLines="1"
-            android:text="Net - montly bills" />
+            android:text="Done"
+            android:textColor="@android:color/white" />
     </LinearLayout>
-    <Button
-        android:id="@+id/Setup_Done"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:background="@android:color/black"
-        android:textSize="@dimen/TextSize"
-        android:text="Done"
-        android:textColor="@android:color/white" />
-</LinearLayout>
+</ScrollView>

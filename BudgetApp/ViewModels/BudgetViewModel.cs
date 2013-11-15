@@ -33,7 +33,7 @@ namespace BudgetApp
         {
             get
             {
-                return NetIncome.Value - MonthlyBills.Sum(t => t.Amount) - BudgetItems.Sum(t=>t.Remaining);
+                return _netIncome.GetValueOrDefault(0m) - MonthlyBills.Sum(t => t.Amount) - BudgetItems.Sum(t=>t.Remaining);
             }
         }
 

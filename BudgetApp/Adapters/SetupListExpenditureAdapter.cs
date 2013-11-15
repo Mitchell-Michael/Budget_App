@@ -15,14 +15,18 @@ namespace BudgetApp
     public class SetupListExpenditureAdapter : ArrayAdapter<MonthlyBill>
     {
         private readonly BudgetViewModel _budgetViewModel = ServiceContainer.Resolve<BudgetViewModel>();
+        Context _context;
         List<MonthlyBill> _list;
+        TextView _header;
         int _id;
 
-        public SetupListExpenditureAdapter(Context context, int resourceId, List<MonthlyBill> list)
-            : base(context, resourceId, list)
+        public SetupListExpenditureAdapter(Context context, int resourceId, List<MonthlyBill> list, ref TextView header)
+            :base(context, resourceId, list)
         {
             _list = list;
+            _header = header;
             _id = resourceId;
+            _context = context;
         }
 
         public override View GetView(int position, View view, ViewGroup parent)
@@ -30,7 +34,7 @@ namespace BudgetApp
             TextView name = null, amount = null;
             if (view == null)
             {
-                view = LayoutInflater.FromContext(Context).Inflate(_id, null, false);
+                view = LayoutInflater.FromContext(_context).Inflate(_id, null, false);
             }
 
             name = view.FindViewById<TextView>(Resource.Id.MontlyExpenseName);
@@ -54,6 +58,14 @@ namespace BudgetApp
         {
             get
             {
+                if (_list.Count == 0)
+                {
+                    _header.Visibility = ViewStates.Gone;
+                }
+                else
+                {
+                    _header.Visibility = ViewStates.Visible;
+                }
                 return _list.Count;
             }
         }
