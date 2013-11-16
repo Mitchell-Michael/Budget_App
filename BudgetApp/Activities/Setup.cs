@@ -12,13 +12,14 @@ using Android.Widget;
 
 namespace BudgetApp
 {
-    [Activity(Label = "Setup", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait, WindowSoftInputMode = SoftInput.StateHidden)]
+    [Activity(Label = "Setup", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait, WindowSoftInputMode = SoftInput.StateHidden | SoftInput.AdjustPan)]
     public class Setup : Activity, BudgetViewModel.IEventListener
     {
         private ListView _setupList;
         private EditText _netIncome, _addAmount, _addName;
         private TextView _remaining;
         private Button _add, _delete;
+        private LinearLayout _rootLayout;
         private string _lastText = string.Empty;
 
         private SetupListExpenditureAdapter _adapter;
@@ -31,12 +32,14 @@ namespace BudgetApp
 
             SetContentView(Resource.Layout.Setup);
 
+            _rootLayout = FindViewById<LinearLayout>(Resource.Id.Setup_RootLayout);
+
             var addLayout = FindViewById<LinearLayout>(Resource.Id.Setup_AddLayout);
             _addName = FindViewById<EditText>(Resource.Id.Setup_AddName);
             _addAmount = FindViewById<EditText>(Resource.Id.Setup_AddAmount);
-            _addAmount.EditorAction += (sender, e) =>
+            _addName.EditorAction += (sender, e) =>
                 {
-                    _addName.RequestFocus();
+                    _addAmount.RequestFocus();
                 };
 
             _setupList = FindViewById<ListView>(Resource.Id.Setup_List);
@@ -51,11 +54,10 @@ namespace BudgetApp
                     var bills = _budgetViewModel.MonthlyBills;
                     bills.RemoveAt(e.Position);
                     _budgetViewModel.MonthlyBills = bills;
-                    _adapter.Remove(bill);
-                    _adapter.NotifyDataSetChanged();
+                    _adapter.RemoveItem(e.Position);
                     _addName.Text = bill.Name;
-                    _addName.RequestFocus();
                     _addAmount.Text = bill.Amount.ToString();
+                    _addName.RequestFocus();
                 };
 
             _add = FindViewById<Button>(Resource.Id.Setup_NewItem);
@@ -74,13 +76,13 @@ namespace BudgetApp
 
                         _addName.Text = string.Empty;
                         _addAmount.Text = string.Empty;
+                        _addName.RequestFocus();
                     }
                 }
             };
             _addAmount.EditorAction += (sender, e) =>
                 {
-                    FindViewById<ScrollView>(Resource.Id.Setup_RootLayout).RequestFocus();
-                    UIExtensions.HideKeyboard(this, _add.WindowToken);
+                    UIExtensions.HideKeyboard(this, _addAmount.WindowToken);
                 };
 
             _delete = FindViewById<Button>(Resource.Id.Setup_DeleteItem);
@@ -151,6 +153,7 @@ namespace BudgetApp
                     {
                         (_setupList.Adapter as SetupListExpenditureAdapter).NotifyDataSetChanged();
                         RemainingInvalidated();
+                        _setupList.SmoothScrollToPosition(_setupList.Adapter.Count);
                     }
                     break;
             }
@@ -162,13 +165,13 @@ namespace BudgetApp
             if (_budgetViewModel.NetIncome.HasValue)
             {
                 _add.Enabled = _delete.Enabled = _addAmount.Enabled = _addName.Enabled = true;
-                _remaining.Visibility = ViewStates.Invisible;
+                _remaining.Visibility = ViewStates.Visible;
             }
             else
             {
                 _add.Enabled = _delete.Enabled = _addAmount.Enabled = _addName.Enabled = false;
                 _remaining.Text = _budgetViewModel.RemainingTotal.ToString("C");
-                _remaining.Visibility = ViewStates.Visible;
+                _remaining.Visibility = ViewStates.Invisible;
             }
             RemainingInvalidated();
         }

@@ -54,6 +54,12 @@ namespace BudgetApp
             NotifyDataSetChanged();
         }
 
+        public void RemoveItem(int index)
+        {
+            _list.RemoveAt(index);
+            NotifyDataSetChanged();
+        }
+
         public override int Count
         {
             get

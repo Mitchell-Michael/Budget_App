@@ -69,6 +69,7 @@
     </Compile>
     <Compile Include="Adapters\BudgetItemListAdapter.cs" />
     <Compile Include="Adapters\SetupListExpenditureAdapter.cs" />
+    <Compile Include="UIExtensions\CustomScrollView.cs" />
     <Compile Include="UIExtensions\UIExtensions.cs" />
     <Compile Include="ViewModels\BudgetItem.cs" />
     <Compile Include="ViewModels\BudgetViewModel.cs" />
