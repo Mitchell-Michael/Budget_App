@@ -13,7 +13,7 @@ using Android.Widget;
 namespace BudgetApp.Activities
 {
     [Activity(Label = "Splash", MainLauncher=true)]
-    public class Splash : Activity
+    public class SplashActivity : Activity
     {
 
         private readonly BudgetViewModel _budgetViewModel = ServiceContainer.Resolve<BudgetViewModel>();
@@ -30,11 +30,11 @@ namespace BudgetApp.Activities
             base.OnResume();
             if (_budgetViewModel.BudgetItems == null || _budgetViewModel.BudgetItems.Count == 0)
             {
-                StartActivity(typeof(Setup));
+                StartActivity(typeof(SetupBillsActivity));
             }
             else
             {
-                StartActivity(typeof(Overview));
+                StartActivity(typeof(OverviewActivity));
             }
         }
     }

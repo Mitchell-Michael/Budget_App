@@ -12,8 +12,8 @@ using Android.Widget;
 
 namespace BudgetApp
 {
-    [Activity(Label = "Setup", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait, WindowSoftInputMode = SoftInput.StateHidden | SoftInput.AdjustPan)]
-    public class Setup : Activity, BudgetViewModel.IEventListener
+    [Activity(Label = "Setup Budget", LaunchMode = Android.Content.PM.LaunchMode.SingleInstance, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait, WindowSoftInputMode = SoftInput.StateHidden | SoftInput.AdjustPan)]
+    public class SetupBillsActivity : Activity, BudgetViewModel.IEventListener
     {
         private ListView _setupList;
         private EditText _netIncome, _addAmount, _addName;
@@ -121,7 +121,7 @@ namespace BudgetApp
                 };
             FindViewById<Button>(Resource.Id.Setup_Done).Click += delegate
             {
-                StartActivity(typeof(Overview));
+                StartActivity(typeof(SetupBudgetActivity));
             };
 
             OnNetIncomeChanged();

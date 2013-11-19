@@ -11,8 +11,8 @@ using System.Collections.Generic;
 
 namespace BudgetApp
 {
-    [Activity(Label = "Budget App", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait, WindowSoftInputMode = SoftInput.StateHidden, Icon = "@drawable/icon")]
-    public class Overview : Activity, BudgetViewModel.IEventListener
+    [Activity(Label = "Budget App", LaunchMode=Android.Content.PM.LaunchMode.SingleInstance, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait, WindowSoftInputMode = SoftInput.StateHidden, Icon = "@drawable/icon")]
+    public class OverviewActivity : Activity, BudgetViewModel.IEventListener
     {
         ListView _list;
         TextView _bills, _remaining;
@@ -30,7 +30,7 @@ namespace BudgetApp
 
             FindViewById<LinearLayout>(Resource.Id.SetupLayout).Click += delegate
             {
-                StartActivity(typeof(Setup));
+                StartActivity(typeof(SetupBillsActivity));
             };
 
             _list = FindViewById<ListView>(Resource.Id.BudgetList);

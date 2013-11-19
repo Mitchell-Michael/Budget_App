@@ -51,6 +51,7 @@ namespace BudgetApp
             set
             {
                 _monthlyBills = value;
+
                 PropertyChanged.Invoke(Property.MonthlyBill, null);
                 PushBills();
             }
@@ -70,6 +71,7 @@ namespace BudgetApp
             set 
             {
                 _budgetItems = value;
+
                 PropertyChanged.Invoke(Property.BudgetItem, null);
                 PushBudget();
             }
@@ -89,7 +91,7 @@ namespace BudgetApp
             set
             {
                 _netIncome = value;
-                
+
                 PropertyChanged.Invoke(Property.NetIncome, null);
                 PushIncome();
             }

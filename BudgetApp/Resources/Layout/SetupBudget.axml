@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/Setup_RootLayout"
+    android:id="@+id/Budget_RootLayout"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_gravity="center"
-        android:text="Monthly Expenses"
+        android:text="Budgeted Expenses"
         android:textSize="@dimen/TextSize"
         android:textColor="@android:color/black" />
     <LinearLayout
@@ -27,13 +27,13 @@
             android:layout_width="0px"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Net Income"
+            android:text="After Bills"
             android:textColor="@android:color/black"
             android:textSize="@dimen/TextSize"
             android:singleLine="true"
             android:maxLines="1" />
-        <EditText
-            android:id="@+id/Setup_NetIncomeAmount"
+        <TextView
+            android:id="@+id/Budget_NetIncomeAmount"
             android:layout_width="0px"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -45,17 +45,17 @@
             android:inputType="number" />
     </LinearLayout>
     <TextView
-        android:id="@+id/Setup_ListHeader"
+        android:id="@+id/Budget_ListHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textSize="@dimen/TextSize"
         android:textColor="@android:color/black"
-        android:text="Your Bills"
+        android:text="Your Budget"
         android:singleLine="true"
         android:maxLines="1" />
     <ListView
-        android:id="@+id/Setup_List"
+        android:id="@+id/Budget_List"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -63,13 +63,13 @@
         android:divider="@android:color/black"
         android:dividerHeight="1dp" />
     <LinearLayout
-        android:id="@+id/Setup_AddLayout"
+        android:id="@+id/Budget_AddLayout"
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp">
         <EditText
-            android:id="@+id/Setup_AddName"
+            android:id="@+id/Budget_AddName"
             android:layout_width="0px"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -79,7 +79,7 @@
             android:singleLine="true"
             android:maxLines="1" />
         <EditText
-            android:id="@+id/Setup_AddAmount"
+            android:id="@+id/Budget_AddAmount"
             android:layout_width="0px"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -95,7 +95,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <Button
-            android:id="@+id/Setup_NewItem"
+            android:id="@+id/Budget_NewItem"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -108,7 +108,7 @@
             android:text="Add"
             android:textSize="@dimen/TextSize" />
         <Button
-            android:id="@+id/Setup_DeleteItem"
+            android:id="@+id/Budget_DeleteItem"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -136,9 +136,9 @@
             android:textSize="@dimen/TextSize"
             android:singleLine="true"
             android:maxLines="1"
-            android:text="Remaining" />
+            android:text="Savings" />
         <TextView
-            android:id="@+id/Setup_Remaining"
+            android:id="@+id/Budget_Remaining"
             android:layout_width="0px"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -149,7 +149,7 @@
             android:text="" />
     </LinearLayout>
     <Button
-        android:id="@+id/Setup_Done"
+        android:id="@+id/Budget_Done"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -157,6 +157,6 @@
         android:layout_marginBottom="10dp"
         android:background="@drawable/BlackButtonSelector"
         android:textSize="@dimen/TextSize"
-        android:text="Continue"
+        android:text="Done"
         android:textColor="@android:color/white" />
 </LinearLayout>

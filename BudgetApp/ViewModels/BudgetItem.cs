@@ -50,11 +50,7 @@ namespace BudgetApp
         public void Reset()
         {
             Amount = Allocated;
-        }
-
-        public override bool Validate()
-        {
-            return base.Validate() && Allocated > 0;
+            expenditures.Clear();
         }
     }
 }

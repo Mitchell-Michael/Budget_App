@@ -60,14 +60,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activities\Splash.cs" />
-    <Compile Include="Activities\Overview.cs">
+    <Compile Include="Activities\SetupBudgetActivity.cs" />
+    <Compile Include="Activities\SplashActivity.cs" />
+    <Compile Include="Activities\OverviewActivity.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Activities\Setup.cs">
+    <Compile Include="Activities\SetupBillsActivity.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Adapters\BudgetItemListAdapter.cs" />
+    <Compile Include="Adapters\BudgetItemSetupListAdapter.cs" />
     <Compile Include="Adapters\SetupListExpenditureAdapter.cs" />
     <Compile Include="UIExtensions\CustomScrollView.cs" />
     <Compile Include="UIExtensions\UIExtensions.cs" />
@@ -132,5 +134,9 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ItemGroup />
+  <ItemGroup>
+    <AndroidResource Include="Resources\Layout\SetupBudget.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+  </ItemGroup>
 </Project>
