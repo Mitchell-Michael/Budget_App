@@ -10,6 +10,7 @@
         android:layout_marginTop="10dp"
         android:layout_gravity="center"
         android:text="Overview"
+        android:textStyle="bold"
         android:textSize="@dimen/TextSize"
         android:textColor="@android:color/black" />
     <LinearLayout
@@ -23,6 +24,7 @@
             android:layout_width="0px"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center"
             android:textSize="@dimen/TextSize"
             android:textColor="@android:color/black"
             android:text="Bills" />
@@ -33,13 +35,17 @@
             android:layout_width="0px"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:gravity="center"
             android:textSize="@dimen/TextSize"
             android:textColor="@android:color/black" />
     </LinearLayout>
     <ListView
         android:id="@+id/BudgetList"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:divider="@android:color/black"
+        android:dividerHeight="1px" />
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

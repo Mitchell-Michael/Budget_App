@@ -17,12 +17,10 @@ namespace BudgetApp
     {
         private ListView _setupList;
         private EditText _addAmount, _addName;
-        private TextView _savings, _remaining;
+        private TextView _savings, _remaining, _header;
         private Button _add, _delete;
         private LinearLayout _rootLayout;
         private string _lastText = string.Empty;
-
-        private BudgetItemSetupListAdapter _adapter;
 
         private readonly BudgetViewModel _budgetViewModel = ServiceContainer.Resolve<BudgetViewModel>();
 
@@ -43,10 +41,9 @@ namespace BudgetApp
             };
 
             _setupList = FindViewById<ListView>(Resource.Id.Budget_List);
-            var header = FindViewById<TextView>(Resource.Id.Budget_ListHeader);
+            _header = FindViewById<TextView>(Resource.Id.Budget_ListHeader);
 
-            _adapter = new BudgetItemSetupListAdapter(this, Resource.Layout.SetupItem, _budgetViewModel.BudgetItems, ref header);
-            _setupList.Adapter = _adapter;
+            _setupList.Adapter = new BudgetItemSetupListAdapter(this, ref _header);
 
             _setupList.ItemLongClick += (sender, e) =>
             {
@@ -54,9 +51,9 @@ namespace BudgetApp
                 var bills = _budgetViewModel.BudgetItems;
                 bills.RemoveAt(e.Position);
                 _budgetViewModel.BudgetItems = bills;
-                _adapter.RemoveItem(e.Position);
+                (_setupList.Adapter as BaseAdapter).NotifyDataSetChanged();
                 _addName.Text = bill.Name;
-                _addAmount.Text = bill.Amount.ToString();
+                _addAmount.Text = bill.Allocated.ToString();
                 _addName.RequestFocus();
             };
 
@@ -69,7 +66,7 @@ namespace BudgetApp
                     if (!string.IsNullOrEmpty(_addName.Text))
                     {
                         BudgetItem bill = new BudgetItem() { Name = _addName.Text, Allocated = d };
-                        (_setupList.Adapter as BudgetItemSetupListAdapter).AddItem(bill);
+                        (_setupList.Adapter as BaseAdapter).NotifyDataSetChanged();
                         var bills = _budgetViewModel.BudgetItems;
                         bills.Add(bill);
                         _budgetViewModel.BudgetItems = bills;
@@ -105,6 +102,9 @@ namespace BudgetApp
         protected override void OnResume()
         {
             base.OnResume();
+
+            (_setupList.Adapter as BaseAdapter).NotifyDataSetChanged();
+
             _remaining.Text = (_budgetViewModel.NetIncome.Value - _budgetViewModel.MonthlyBills.Sum(t => t.Amount)).ToString("C");
             RemainingInvalidated();
             _budgetViewModel.PropertyChanged += OnPropertyChanged;

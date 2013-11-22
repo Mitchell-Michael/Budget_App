@@ -47,6 +47,27 @@ namespace BudgetApp
             }
         }
 
+        public Android.Graphics.Color Color
+        {
+            get { return Color(); }
+        }
+
+        private Android.Graphics.Color Color()
+        {
+            Android.Graphics.Color color;
+            if (Remaining >= 0)
+            {
+                color = new Android.Graphics.Color(0, (int)(255m * Remaining / Allocated), 0);
+            }
+            else
+            {
+                decimal red = Remaining == 0 ? 0m : 255m * Allocated / Remaining;
+                color = new Android.Graphics.Color((int)red, 0, 0);
+            }
+            return color;
+        }
+        
+
         public void Reset()
         {
             Amount = Allocated;

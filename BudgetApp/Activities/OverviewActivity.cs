@@ -34,7 +34,7 @@ namespace BudgetApp
             };
 
             _list = FindViewById<ListView>(Resource.Id.BudgetList);
-            _list.Adapter = new BudgetItemListAdapter(this, 0, _budgetViewModel.BudgetItems );
+            _list.Adapter = new BudgetItemListAdapter(this);
         }
 
         protected override void OnResume()

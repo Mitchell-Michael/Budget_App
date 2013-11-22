@@ -9,48 +9,65 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Android.Graphics;
 
 namespace BudgetApp
 {
-    public class BudgetItemListAdapter : ArrayAdapter<BudgetItem>
+    public class BudgetItemListAdapter : BaseAdapter<BudgetItem>
     {
+        BudgetViewModel _budgetViewModel = ServiceContainer.Resolve<BudgetViewModel>();
+
+        Context _context;
         List<BudgetItem> _list;
         int _id;
 
-        public BudgetItemListAdapter(Context context, int resourceId, List<BudgetItem> list)
-            : base(context, resourceId, list)
+        public BudgetItemListAdapter(Context context)
         {
-            _list = list;
+            _context = context;
             _id = Resource.Layout.BudgetItem;
+            _list = _budgetViewModel.BudgetItems;
         }
 
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
             if (convertView == null)
             {
-                convertView = LayoutInflater.FromContext(Context).Inflate(_id, null, false);
+                convertView = LayoutInflater.FromContext(_context).Inflate(_id, null, false);
             }
 
             var item = _list[position];
-            convertView.FindViewById<TextView>(Resource.Id.Category).Text = item.Name;
-            convertView.FindViewById<TextView>(Resource.Id.BudgetAllocated).Text = item.Allocated.ToString("C");
-            convertView.FindViewById<TextView>(Resource.Id.BudgetRemaining).Text = item.Remaining.ToString("C");
+            var category = convertView.FindViewById<TextView>(Resource.Id.BudgetCategory);
+            category.Text = item.Name;
+            //convertView.FindViewById<TextView>(Resource.Id.BudgetAllocated).Text = item.Allocated.ToString("C");
+            var remaining = convertView.FindViewById<TextView>(Resource.Id.BudgetRemaining);
+            remaining.Text = item.Remaining.ToString("C");
+            remaining.SetTextColor(item.Color);
 
             return convertView;
         }
 
-        public void AddItem(BudgetItem item)
+        public override void NotifyDataSetChanged()
         {
-            _list.Add(item);
-            NotifyDataSetChanged();
+            _list = _budgetViewModel.BudgetItems;
         }
 
         public override int Count
         {
+            //TODO: Maybe add header here
             get
             {
                 return _list.Count;
             }
+        }
+
+        public override long GetItemId(int position)
+        {
+            return position;
+        }
+
+        public override BudgetItem this[int position]
+        {
+            get { return _list[position]; }
         }
     }
 }

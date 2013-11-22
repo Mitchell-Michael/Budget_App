@@ -12,25 +12,26 @@ using Android.Widget;
 
 namespace BudgetApp
 {
-    public class BudgetItemSetupListAdapter : ArrayAdapter<BudgetItem>
+    public class BudgetItemSetupListAdapter : BaseAdapter<BudgetItem>
     {
-        List<BudgetItem> _list = ServiceContainer.Resolve<BudgetViewModel>().BudgetItems;
-        int _id;
+        BudgetViewModel _budgetViewModel = ServiceContainer.Resolve<BudgetViewModel>();
+        List<BudgetItem> _list;
+
+        Context _context;
         TextView _header;
 
-        public BudgetItemSetupListAdapter(Context context, int resourceId, List<BudgetItem> list, ref TextView header)
-            : base(context, resourceId, list)
+        public BudgetItemSetupListAdapter(Context context, ref TextView header)
         {
-            _list = list;
-            _id = Resource.Layout.SetupItem;
+            _context = context;
             _header = header;
+            _list = _budgetViewModel.BudgetItems;
         }
 
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
             if (convertView == null)
             {
-                convertView = LayoutInflater.FromContext(Context).Inflate(_id, null, false);
+                convertView = LayoutInflater.FromContext(_context).Inflate(Resource.Layout.SetupItem, null, false);
             }
 
             var item = _list[position];
@@ -40,16 +41,9 @@ namespace BudgetApp
             return convertView;
         }
 
-        public void AddItem(BudgetItem item)
+        public override void NotifyDataSetChanged()
         {
-            _list.Add(item);
-            NotifyDataSetChanged();
-        }
-
-        public void RemoveItem(int index)
-        {
-            _list.RemoveAt(index);
-            NotifyDataSetChanged();
+            _list = _budgetViewModel.BudgetItems;
         }
 
         public override int Count
@@ -66,6 +60,16 @@ namespace BudgetApp
                 }
                 return _list.Count;
             }
+        }
+
+        public override long GetItemId(int position)
+        {
+            return position;
+        }
+
+        public override BudgetItem this[int position]
+        {
+            get { return _list[position]; }
         }
     }
 }
