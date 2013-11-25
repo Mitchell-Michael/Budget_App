@@ -12,7 +12,7 @@ using System.Collections.Generic;
 namespace BudgetApp
 {
     [Activity(Label = "Budget App", LaunchMode=Android.Content.PM.LaunchMode.SingleInstance, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait, WindowSoftInputMode = SoftInput.StateHidden, Icon = "@drawable/icon")]
-    public class OverviewActivity : Activity, BudgetViewModel.IEventListener
+    public class OverviewActivity : Activity
     {
         ListView _list;
         TextView _bills, _remaining;
@@ -40,42 +40,27 @@ namespace BudgetApp
         protected override void OnResume()
         {
             base.OnResume();
-            _budgetViewModel.PropertyChanged += OnPropertyChanged;
 
             _bills.Text = _budgetViewModel.MonthlyBills.Sum(t => t.Amount).ToString("C");
             _remaining.Text = _budgetViewModel.RemainingTotal.ToString("C");
         }
 
-        protected override void OnPause()
+        public void OnNetIncomeChanged()
         {
-            base.OnPause();
-            _budgetViewModel.PropertyChanged -= OnPropertyChanged;
+            _remaining.Text = _budgetViewModel.RemainingTotal.ToString("C");
         }
 
-        public void OnPropertyChanged(object sender, EventArgs e)
+        public void OnMonthlyBillChanged()
         {
-            var property = (BudgetViewModel.Property)sender;
-            switch (property)
-            {
-                case BudgetViewModel.Property.NetIncome:
-                    {
-                        _remaining.Text = _budgetViewModel.RemainingTotal.ToString("C");
-                    }
-                    break;
-                case BudgetViewModel.Property.MonthlyBill:
-                    {
-                        _bills.Text = _budgetViewModel.MonthlyBills.Sum(t => t.Amount).ToString("C");
-                        _remaining.Text = _budgetViewModel.RemainingTotal.ToString("C");
-                    }
-                    break;
-                case BudgetViewModel.Property.BudgetItem:
-                    {
-                        ((BudgetItemListAdapter)_list.Adapter).NotifyDataSetInvalidated();
-                        _bills.Text = _budgetViewModel.MonthlyBills.Sum(t => t.Amount).ToString("C");
-                        _remaining.Text = _budgetViewModel.RemainingTotal.ToString("C");
-                    }
-                    break;
-            }
+            _bills.Text = _budgetViewModel.MonthlyBills.Sum(t => t.Amount).ToString("C");
+            _remaining.Text = _budgetViewModel.RemainingTotal.ToString("C");
+        }
+
+        public void OnBudgetItemChanged()
+        {
+            ((BudgetItemListAdapter)_list.Adapter).NotifyDataSetInvalidated();
+            _bills.Text = _budgetViewModel.MonthlyBills.Sum(t => t.Amount).ToString("C");
+            _remaining.Text = _budgetViewModel.RemainingTotal.ToString("C");
         }
     }
 }

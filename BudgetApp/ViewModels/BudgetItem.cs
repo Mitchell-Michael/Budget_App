@@ -24,7 +24,7 @@ namespace BudgetApp
 
         public decimal Remaining
         {
-            get { return Allocated - Amount; }
+            get { return Allocated; }
         }
 
         List<Expenditure> expenditures;
@@ -47,12 +47,7 @@ namespace BudgetApp
             }
         }
 
-        public Android.Graphics.Color Color
-        {
-            get { return Color(); }
-        }
-
-        private Android.Graphics.Color Color()
+        public Android.Graphics.Color GetColor()
         {
             Android.Graphics.Color color;
             if (Remaining >= 0)

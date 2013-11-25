@@ -41,7 +41,7 @@ namespace BudgetApp
             //convertView.FindViewById<TextView>(Resource.Id.BudgetAllocated).Text = item.Allocated.ToString("C");
             var remaining = convertView.FindViewById<TextView>(Resource.Id.BudgetRemaining);
             remaining.Text = item.Remaining.ToString("C");
-            remaining.SetTextColor(item.Color);
+            remaining.SetTextColor(item.GetColor());
 
             return convertView;
         }

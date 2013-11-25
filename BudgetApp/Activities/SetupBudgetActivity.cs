@@ -13,7 +13,7 @@ using Android.Widget;
 namespace BudgetApp
 {
     [Activity(Label = "Setup Budget", LaunchMode = Android.Content.PM.LaunchMode.SingleInstance, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait, WindowSoftInputMode = SoftInput.StateHidden | SoftInput.AdjustPan)]
-    public class SetupBudgetActivity : Activity, BudgetViewModel.IEventListener
+    public class SetupBudgetActivity : Activity
     {
         private ListView _setupList;
         private EditText _addAmount, _addName;
@@ -51,7 +51,9 @@ namespace BudgetApp
                 var bills = _budgetViewModel.BudgetItems;
                 bills.RemoveAt(e.Position);
                 _budgetViewModel.BudgetItems = bills;
-                (_setupList.Adapter as BaseAdapter).NotifyDataSetChanged();
+
+                OnBudgetChanged();
+
                 _addName.Text = bill.Name;
                 _addAmount.Text = bill.Allocated.ToString();
                 _addName.RequestFocus();
@@ -66,10 +68,11 @@ namespace BudgetApp
                     if (!string.IsNullOrEmpty(_addName.Text))
                     {
                         BudgetItem bill = new BudgetItem() { Name = _addName.Text, Allocated = d };
-                        (_setupList.Adapter as BaseAdapter).NotifyDataSetChanged();
                         var bills = _budgetViewModel.BudgetItems;
                         bills.Add(bill);
                         _budgetViewModel.BudgetItems = bills;
+
+                        OnBudgetChanged();
 
                         _addName.Text = string.Empty;
                         _addAmount.Text = string.Empty;
@@ -103,32 +106,15 @@ namespace BudgetApp
         {
             base.OnResume();
 
-            (_setupList.Adapter as BaseAdapter).NotifyDataSetChanged();
-
             _remaining.Text = (_budgetViewModel.NetIncome.Value - _budgetViewModel.MonthlyBills.Sum(t => t.Amount)).ToString("C");
+            OnBudgetChanged();
+        }
+
+        private void OnBudgetChanged()
+        {
+            (_setupList.Adapter as BaseAdapter).NotifyDataSetChanged();
             RemainingInvalidated();
-            _budgetViewModel.PropertyChanged += OnPropertyChanged;
-        }
-
-        protected override void OnPause()
-        {
-            base.OnPause();
-            _budgetViewModel.PropertyChanged -= OnPropertyChanged;
-        }
-
-        public void OnPropertyChanged(object sender, EventArgs e)
-        {
-            var property = (BudgetViewModel.Property)sender;
-            switch (property)
-            {
-                case BudgetViewModel.Property.BudgetItem:
-                    {
-                        (_setupList.Adapter as BudgetItemSetupListAdapter).NotifyDataSetChanged();
-                        RemainingInvalidated();
-                        _setupList.SmoothScrollToPosition(_setupList.Adapter.Count);
-                    }
-                    break;
-            }
+            _setupList.SmoothScrollToPosition(_setupList.Adapter.Count);
         }
 
         private void RemainingInvalidated()

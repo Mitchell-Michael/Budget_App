@@ -13,12 +13,12 @@ using Android.Widget;
 namespace BudgetApp
 {
     [Activity(Label = "Setup Budget", LaunchMode = Android.Content.PM.LaunchMode.SingleInstance, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait, WindowSoftInputMode = SoftInput.StateHidden | SoftInput.AdjustPan)]
-    public class SetupBillsActivity : Activity, BudgetViewModel.IEventListener
+    public class SetupBillsActivity : Activity
     {
         private ListView _setupList;
         private EditText _netIncome, _addAmount, _addName;
         private TextView _remaining;
-        private Button _add, _delete;
+        private Button _add, _delete, _continue;
         private LinearLayout _rootLayout;
         private string _lastText = string.Empty;
 
@@ -45,7 +45,7 @@ namespace BudgetApp
             _setupList = FindViewById<ListView>(Resource.Id.Setup_List);
             var header = FindViewById<TextView>(Resource.Id.Setup_ListHeader);
             
-            _adapter = new SetupListExpenditureAdapter(this, Resource.Layout.SetupItem, _budgetViewModel.MonthlyBills, ref header);
+            _adapter = new SetupListExpenditureAdapter(this, ref header);
             _setupList.Adapter = _adapter;
 
             _setupList.ItemLongClick += (sender, e) =>
@@ -53,8 +53,8 @@ namespace BudgetApp
                     var bill = _budgetViewModel.MonthlyBills[e.Position];
                     var bills = _budgetViewModel.MonthlyBills;
                     bills.RemoveAt(e.Position);
+                    OnMonthlyBillsChanged();
                     _budgetViewModel.MonthlyBills = bills;
-                    _adapter.RemoveItem(e.Position);
                     _addName.Text = bill.Name;
                     _addAmount.Text = bill.Amount.ToString();
                     _addName.RequestFocus();
@@ -69,10 +69,11 @@ namespace BudgetApp
                 {
                     if ((bill = new MonthlyBill() { Name = _addName.Text, Amount = d }).Validate())
                     {
-                        (_setupList.Adapter as SetupListExpenditureAdapter).AddItem(bill);
                         var bills = _budgetViewModel.MonthlyBills;
                         bills.Add(bill);
                         _budgetViewModel.MonthlyBills = bills;
+
+                        OnMonthlyBillsChanged();
 
                         _addName.Text = string.Empty;
                         _addAmount.Text = string.Empty;
@@ -112,6 +113,7 @@ namespace BudgetApp
                         {
                             _budgetViewModel.NetIncome = d;
                             _netIncome.Text = d.ToString("C");
+                            OnNetIncomeChanged();
                         }
                         else
                         {
@@ -119,44 +121,18 @@ namespace BudgetApp
                         }
                     }
                 };
-            FindViewById<Button>(Resource.Id.Setup_Done).Click += delegate
+            _continue = FindViewById<Button>(Resource.Id.Setup_Done);
+            _continue.Click += delegate
             {
                 StartActivity(typeof(SetupBudgetActivity));
             };
-
-            OnNetIncomeChanged();
         }
 
         protected override void OnResume()
         {
             base.OnResume();
-            _budgetViewModel.PropertyChanged += OnPropertyChanged;
-        }
-
-        protected override void OnPause()
-        {
-            base.OnPause();
-            _budgetViewModel.PropertyChanged -= OnPropertyChanged;
-        }
-
-        public void OnPropertyChanged(object sender, EventArgs e)
-        {
-            var property = (BudgetViewModel.Property)sender;
-            switch (property)
-            {
-                case BudgetViewModel.Property.NetIncome:
-                    {
-                        OnNetIncomeChanged();
-                    }
-                    break;
-                case BudgetViewModel.Property.MonthlyBill:
-                    {
-                        (_setupList.Adapter as SetupListExpenditureAdapter).NotifyDataSetChanged();
-                        RemainingInvalidated();
-                        _setupList.SmoothScrollToPosition(_setupList.Adapter.Count);
-                    }
-                    break;
-            }
+            OnNetIncomeChanged();
+            OnMonthlyBillsChanged();
         }
 
         private void OnNetIncomeChanged()
@@ -164,16 +140,23 @@ namespace BudgetApp
             _netIncome.Text = _budgetViewModel.NetIncome.GetValueOrDefault(0m).ToString("C");
             if (_budgetViewModel.NetIncome.HasValue)
             {
-                _add.Enabled = _delete.Enabled = _addAmount.Enabled = _addName.Enabled = true;
+                _add.Enabled = _delete.Enabled = _addAmount.Enabled = _continue.Enabled = _addName.Enabled = true;
                 _remaining.Visibility = ViewStates.Visible;
             }
             else
             {
-                _add.Enabled = _delete.Enabled = _addAmount.Enabled = _addName.Enabled = false;
+                _add.Enabled = _delete.Enabled = _addAmount.Enabled = _continue.Enabled = _addName.Enabled = false;
                 _remaining.Text = _budgetViewModel.RemainingTotal.ToString("C");
                 _remaining.Visibility = ViewStates.Invisible;
             }
             RemainingInvalidated();
+        }
+
+        private void OnMonthlyBillsChanged()
+        {
+            (_setupList.Adapter as BaseAdapter).NotifyDataSetChanged();
+            RemainingInvalidated();
+            _setupList.SmoothScrollToPosition(_setupList.Adapter.Count);
         }
 
         private void RemainingInvalidated()

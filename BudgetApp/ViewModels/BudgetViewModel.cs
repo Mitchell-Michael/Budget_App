@@ -8,17 +8,6 @@ namespace BudgetApp
 {
     public class BudgetViewModel
     {
-        public enum Property
-        {
-            NetIncome,
-            MonthlyBill,
-            BudgetItem,
-        }
-
-        public interface IEventListener
-        {
-            void OnPropertyChanged(object sender, EventArgs e);
-        }
 
         private object _lock;
 
@@ -51,8 +40,6 @@ namespace BudgetApp
             set
             {
                 _monthlyBills = value;
-
-                PropertyChanged.Invoke(Property.MonthlyBill, null);
                 PushBills();
             }
         }
@@ -72,7 +59,6 @@ namespace BudgetApp
             {
                 _budgetItems = value;
 
-                PropertyChanged.Invoke(Property.BudgetItem, null);
                 PushBudget();
             }
         }
@@ -91,8 +77,6 @@ namespace BudgetApp
             set
             {
                 _netIncome = value;
-
-                PropertyChanged.Invoke(Property.NetIncome, null);
                 PushIncome();
             }
         }

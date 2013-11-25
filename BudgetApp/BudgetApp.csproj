@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\DetailActivity.cs" />
     <Compile Include="Activities\SetupBudgetActivity.cs" />
     <Compile Include="Activities\SplashActivity.cs" />
     <Compile Include="Activities\OverviewActivity.cs">
@@ -136,6 +137,11 @@
   -->
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\SetupBudget.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Layout\BudgetDetail.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>

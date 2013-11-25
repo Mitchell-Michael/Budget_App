@@ -12,7 +12,7 @@ using Android.Widget;
 
 namespace BudgetApp
 {
-    public class SetupListExpenditureAdapter : ArrayAdapter<MonthlyBill>
+    public class SetupListExpenditureAdapter : BaseAdapter<MonthlyBill>
     {
         private readonly BudgetViewModel _budgetViewModel = ServiceContainer.Resolve<BudgetViewModel>();
         Context _context;
@@ -20,21 +20,19 @@ namespace BudgetApp
         TextView _header;
         int _id;
 
-        public SetupListExpenditureAdapter(Context context, int resourceId, List<MonthlyBill> list, ref TextView header)
-            :base(context, resourceId, list)
+        public SetupListExpenditureAdapter(Context context, ref TextView header)
         {
-            _list = list;
             _header = header;
-            _id = resourceId;
             _context = context;
+            _list = _budgetViewModel.MonthlyBills;
         }
 
         public override View GetView(int position, View view, ViewGroup parent)
         {
-            TextView name = null, amount = null;
+            TextView name, amount;
             if (view == null)
             {
-                view = LayoutInflater.FromContext(_context).Inflate(_id, null, false);
+                view = LayoutInflater.FromContext(_context).Inflate(Resource.Layout.SetupItem, null, false);
             }
 
             name = view.FindViewById<TextView>(Resource.Id.MontlyExpenseName);
@@ -48,16 +46,16 @@ namespace BudgetApp
             return view;
         }
 
-        public void AddItem(MonthlyBill item)
-        {
-            _list.Add(item);
-            NotifyDataSetChanged();
-        }
-
         public void RemoveItem(int index)
         {
             _list.RemoveAt(index);
             NotifyDataSetChanged();
+        }
+
+        public override void NotifyDataSetChanged()
+        {
+            _list = _budgetViewModel.MonthlyBills;
+            base.NotifyDataSetChanged();
         }
 
         public override int Count
@@ -74,6 +72,16 @@ namespace BudgetApp
                 }
                 return _list.Count;
             }
+        }
+
+        public override long GetItemId(int position)
+        {
+            return position;
+        }
+
+        public override MonthlyBill this[int position]
+        {
+            get { return _list[position]; }
         }
     }
 }

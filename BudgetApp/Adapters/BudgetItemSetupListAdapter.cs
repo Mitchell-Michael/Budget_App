@@ -14,7 +14,7 @@ namespace BudgetApp
 {
     public class BudgetItemSetupListAdapter : BaseAdapter<BudgetItem>
     {
-        BudgetViewModel _budgetViewModel = ServiceContainer.Resolve<BudgetViewModel>();
+        private readonly BudgetViewModel _budgetViewModel = ServiceContainer.Resolve<BudgetViewModel>();
         List<BudgetItem> _list;
 
         Context _context;
@@ -44,6 +44,7 @@ namespace BudgetApp
         public override void NotifyDataSetChanged()
         {
             _list = _budgetViewModel.BudgetItems;
+            base.NotifyDataSetChanged();
         }
 
         public override int Count
