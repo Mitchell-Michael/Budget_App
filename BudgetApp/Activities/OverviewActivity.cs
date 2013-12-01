@@ -17,7 +17,7 @@ namespace BudgetApp
         LinearLayout _headers;
         ListView _list;
         TextView _net, _bills, _remaining;
-        private BudgetViewModel _budgetViewModel = ServiceContainer.Resolve<BudgetViewModel>();
+        private readonly BudgetViewModel _budgetViewModel = ServiceContainer.Resolve<BudgetViewModel>();
 
         protected override void OnCreate(Bundle bundle)
         {

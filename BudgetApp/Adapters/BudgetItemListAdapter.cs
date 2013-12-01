@@ -15,17 +15,19 @@ namespace BudgetApp
 {
     public class BudgetItemListAdapter : BaseAdapter<BudgetItem>
     {
-        BudgetViewModel _budgetViewModel = ServiceContainer.Resolve<BudgetViewModel>();
+        private readonly BudgetViewModel _budgetViewModel = ServiceContainer.Resolve<BudgetViewModel>();
 
+        LinearLayout _headers;
         Context _context;
         List<BudgetItem> _list;
         int _id;
 
-        public BudgetItemListAdapter(Context context)
+        public BudgetItemListAdapter(Context context, ref LinearLayout headers)
         {
             _context = context;
             _id = Resource.Layout.BudgetItem;
             _list = _budgetViewModel.BudgetItems;
+            _headers = headers;
         }
 
         public override View GetView(int position, View convertView, ViewGroup parent)
@@ -38,7 +40,6 @@ namespace BudgetApp
             var item = _list[position];
             var category = convertView.FindViewById<TextView>(Resource.Id.BudgetCategory);
             category.Text = item.Name;
-            //convertView.FindViewById<TextView>(Resource.Id.BudgetAllocated).Text = item.Allocated.ToString("C");
             var remaining = convertView.FindViewById<TextView>(Resource.Id.BudgetRemaining);
             remaining.Text = item.Remaining.ToString("C");
             remaining.SetTextColor(item.GetColor());
@@ -53,9 +54,16 @@ namespace BudgetApp
 
         public override int Count
         {
-            //TODO: Maybe add header here
             get
             {
+                if (_list.Count > 0)
+                {
+                    _headers.Visibility = ViewStates.Visible;
+                }
+                else
+                {
+                    _headers.Visibility = ViewStates.Gone;
+                }
                 return _list.Count;
             }
         }

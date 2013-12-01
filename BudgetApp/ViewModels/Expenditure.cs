@@ -2,10 +2,10 @@ using System;
 
 namespace BudgetApp
 {
-    public struct Expenditure : IValidation
+    public class Expenditure : IValidation
     {
         public string Description { get; set; }
-        public DateTime DateRecorded { get; set; }
+        public int DateRecorded { get; set; }
         public decimal Amount { get; set; }
 
         public bool Validate()

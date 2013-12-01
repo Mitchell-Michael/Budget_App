@@ -23,6 +23,7 @@ namespace BudgetApp
         {
             base.OnCreate();
             ServiceContainer.Register<BudgetViewModel>();
+            ServiceContainer.Resolve<BudgetViewModel>().IsNewMonth();
         }
     }
 }

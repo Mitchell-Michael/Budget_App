@@ -64,6 +64,31 @@
             android:textSize="@dimen/TextSize"
             android:textColor="@android:color/black" />
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/Overview_Headers"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+        <TextView
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="@dimen/TextSize"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:text="Name" />
+        <TextView
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="@dimen/TextSize"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:text="Remaining" />
+    </LinearLayout>
     <ListView
         android:id="@+id/BudgetList"
         android:layout_width="fill_parent"

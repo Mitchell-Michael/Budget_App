@@ -44,7 +44,7 @@ namespace BudgetApp
             name = view.FindViewById<TextView>(Resource.Id.Expenditure_Name);
             amount = view.FindViewById<TextView>(Resource.Id.Expenditure_Amount);
 
-            date.Text = item.DateRecorded.ToString("dd");
+            date.Text = item.DateRecorded.ToString();
             name.Text = item.Description;
             amount.Text = item.Amount.ToString("C");
 

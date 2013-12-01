@@ -11,8 +11,6 @@ namespace BudgetApp
 
         private object _lock;
 
-        public event EventHandler PropertyChanged;
-
         public BudgetViewModel()
         {
             _lock = new object();
@@ -58,7 +56,6 @@ namespace BudgetApp
             set 
             {
                 _budgetItems = value;
-
                 PushBudget();
             }
         }
@@ -156,6 +153,64 @@ namespace BudgetApp
                 {
                     _budgetItems = JsonConvert.DeserializeObject<List<BudgetItem>>(perfs.GetString("Budget", ""));
                 }
+            }
+        }
+
+        private int LastOpened
+        {
+            get
+            {
+                try
+                {
+                lock (_lock)
+                {
+                    using (var perfs = PreferenceManager.GetDefaultSharedPreferences(MainApplication.Context))
+                    {
+                        return JsonConvert.DeserializeObject<int>(perfs.GetString("LastOpened", ""));
+                    }
+                }
+                }
+                catch(Exception e)
+                {
+                    return 0;
+                }
+            }
+            set
+            {
+                lock (_lock)
+                {
+                    using (var perfs = PreferenceManager.GetDefaultSharedPreferences(MainApplication.Context))
+                    {
+                        using (var edit = perfs.Edit())
+                        {
+                            edit.PutString("LastOpened", JsonConvert.SerializeObject(value));
+                            edit.Commit();
+                        }
+                    }
+                }
+            }
+        }
+
+        public bool IsNewMonth()
+        {
+            if (LastOpened == null)
+            {
+                LastOpened = 0;
+                return false;
+            }
+            else if (LastOpened < DateTime.Now.Month)
+            {
+                LastOpened = DateTime.Now.Month;
+                for (int i = 0; i < BudgetItems.Count; i++)
+                {
+                    _budgetItems[i].Reset();
+                }
+                return true;
+            }
+            else
+            {
+                LastOpened = DateTime.Now.Month;
+                return false;
             }
         }
     }

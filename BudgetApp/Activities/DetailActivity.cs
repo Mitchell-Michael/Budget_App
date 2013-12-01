@@ -87,7 +87,7 @@ namespace BudgetApp
                 {
                     var expenditure = new Expenditure()
                     {
-                        DateRecorded = DateTime.Now,
+                        DateRecorded = DateTime.Now.Day,
                         Description = _addName.Text,
                         Amount = d,
                     };
@@ -125,6 +125,7 @@ namespace BudgetApp
         private void OnItemChanged()
         {
             _budgetViewModel.BudgetItems[Intent.GetIntExtra("position", 0)] = _item;
+            _budgetViewModel.BudgetItems = _budgetViewModel.BudgetItems;
             (_list.Adapter as BaseAdapter).NotifyDataSetChanged();
             _remaining.Text = _item.Remaining.ToString("C");
             _remaining.SetTextColor(_item.GetColor());

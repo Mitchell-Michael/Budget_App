@@ -12,12 +12,13 @@ using Android.Widget;
 
 namespace BudgetApp
 {
+    [System.Serializable]
     public class BudgetItem : MonthlyBill
     {
 
         public BudgetItem()
         {
-            Expenditures = new List<Expenditure>();
+            List = new ChildList();
         }
 
         public decimal Allocated { get; set; }
@@ -27,17 +28,44 @@ namespace BudgetApp
             get { return Allocated - Amount; }
         }
 
-        public List<Expenditure> Expenditures;
+        public List<Expenditure> Expenditures
+        {
+            get 
+            {
+                return List.Expenditure;
+            }
+            set
+            {
+                if (List.Expenditure == null)
+                {
+                    List.Expenditure = new List<Expenditure>();
+                }
+                List.Expenditure = value;
+            }
+        }
+
+        private ChildList List { get; set; }
+
+        [System.Serializable]
+        private class ChildList
+        {
+            public ChildList() { }
+            public List<Expenditure> Expenditure = new List<Expenditure>();
+        }
 
         public void AddExpenditure(Expenditure expenditure)
         {
-            Expenditures.Add(expenditure);
+            var temp = Expenditures;
+            temp.Add(expenditure);
+            Expenditures = temp;
             Amount += expenditure.Amount;
         }
 
         public void RemoveExpenditure(Expenditure expenditure)
         {
-            Expenditures.Remove(expenditure);
+            var temp = Expenditures;
+            temp.Remove(expenditure);
+            Expenditures = temp;
             Amount -= expenditure.Amount;
         }
 
