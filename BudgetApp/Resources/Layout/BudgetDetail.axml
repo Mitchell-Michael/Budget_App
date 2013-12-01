@@ -25,6 +25,40 @@
         android:textColor="@android:color/black"
         android:longClickable="true"
         android:enabled="false" />
+    <LinearLayout
+        android:id="@+id/Detail_Headers"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+        <TextView
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="@dimen/TextSize"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:text="Day" />
+        <TextView
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:textSize="@dimen/TextSize"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:text="Description" />
+        <TextView
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:textSize="@dimen/TextSize"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:text="Amount" />
+    </LinearLayout>
     <ListView
         android:id="@+id/Detail_List"
         android:layout_width="fill_parent"

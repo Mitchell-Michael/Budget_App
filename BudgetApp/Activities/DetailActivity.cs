@@ -17,6 +17,7 @@ namespace BudgetApp
     {
         private readonly BudgetViewModel _budgetViewModel = ServiceContainer.Resolve<BudgetViewModel>();
 
+        LinearLayout _headers;
         TextView _remaining;
         EditText _addName, _addAmount, _detailName, _allocated;
         ListView _list;
@@ -30,6 +31,8 @@ namespace BudgetApp
             SetContentView(Resource.Layout.BudgetDetail);
 
             _item = _budgetViewModel.BudgetItems.ElementAt(Intent.GetIntExtra("position", 0));
+
+            _headers = FindViewById<LinearLayout>(Resource.Id.Detail_Headers);
 
             _detailName = FindViewById<EditText>(Resource.Id.Detail_Name);
             _detailName.LongClick += delegate
@@ -111,10 +114,12 @@ namespace BudgetApp
             base.OnResume();
 
             _remaining.Text = _item.Remaining.ToString("C");
+            _remaining.SetTextColor(_item.GetColor());
+
             _allocated.Text = _item.Allocated.ToString("C");
             _detailName.Text = _item.Name;
 
-            _list.Adapter = new ExpenditureAdapter(this, Intent.GetIntExtra("position", 0), ref _remaining);
+            _list.Adapter = new ExpenditureAdapter(this, Intent.GetIntExtra("position", 0), ref _headers);
         }
 
         private void OnItemChanged()
@@ -122,6 +127,7 @@ namespace BudgetApp
             _budgetViewModel.BudgetItems[Intent.GetIntExtra("position", 0)] = _item;
             (_list.Adapter as BaseAdapter).NotifyDataSetChanged();
             _remaining.Text = _item.Remaining.ToString("C");
+            _remaining.SetTextColor(_item.GetColor());
         }
     }
 }

@@ -16,15 +16,15 @@ namespace BudgetApp
     {
         private readonly BudgetViewModel _budgetViewModel = ServiceContainer.Resolve<BudgetViewModel>();
 
+        LinearLayout _headers;
         Context _context;
         List<Expenditure> _list;
-        TextView _header;
         int _billNumber;
         int _id;
 
-        public ExpenditureAdapter(Context context, int billNumber, ref TextView header)
+        public ExpenditureAdapter(Context context, int billNumber, ref LinearLayout headers)
         {
-            _header = header;
+            _headers = headers;
             _context = context;
             _list = _budgetViewModel.BudgetItems.ElementAt(billNumber).Expenditures;
             _billNumber = billNumber;
@@ -53,7 +53,18 @@ namespace BudgetApp
 
         public override int Count
         {
-            get { return _list.Count; }
+            get
+            {
+                if (_list.Count == 0)
+                {
+                    _headers.Visibility = ViewStates.Gone;
+                }
+                else
+                {
+                    _headers.Visibility = ViewStates.Visible;
+                }
+                return _list.Count;
+            }
         }
 
         public override void NotifyDataSetChanged()
