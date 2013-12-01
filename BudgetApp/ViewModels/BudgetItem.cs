@@ -24,7 +24,7 @@ namespace BudgetApp
 
         public decimal Remaining
         {
-            get { return Allocated; }
+            get { return Allocated - Amount; }
         }
 
         public List<Expenditure> Expenditures;
@@ -32,13 +32,13 @@ namespace BudgetApp
         public void AddExpenditure(Expenditure expenditure)
         {
             Expenditures.Add(expenditure);
-            Amount -= expenditure.Amount;
+            Amount += expenditure.Amount;
         }
 
         public void RemoveExpenditure(Expenditure expenditure)
         {
             Expenditures.Remove(expenditure);
-            Amount += expenditure.Amount;
+            Amount -= expenditure.Amount;
         }
 
         public Android.Graphics.Color GetColor()
@@ -46,11 +46,14 @@ namespace BudgetApp
             Android.Graphics.Color color;
             if (Remaining >= 0)
             {
-                color = new Android.Graphics.Color(0, (int)(255m * Remaining / Allocated), 0);
+                decimal green = (int)(255m * Remaining / Allocated);
+                if (green > 255) green = 255;
+                color = new Android.Graphics.Color(0, (int)green, 0);
             }
             else
             {
-                decimal red = Remaining == 0 ? 0m : 255m * Allocated / Remaining;
+                decimal red = Remaining == 0 ? 0m : 255m * Allocated / Math.Abs(Remaining);
+                if (red < 0) red = 0;
                 color = new Android.Graphics.Color((int)red, 0, 0);
             }
             return color;
@@ -58,7 +61,7 @@ namespace BudgetApp
         
         public void Reset()
         {
-            Amount = Allocated;
+            Amount = 0;
             Expenditures.Clear();
         }
     }
