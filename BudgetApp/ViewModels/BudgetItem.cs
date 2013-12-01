@@ -17,7 +17,7 @@ namespace BudgetApp
 
         public BudgetItem()
         {
-            expenditures = new List<Expenditure>();
+            Expenditures = new List<Expenditure>();
         }
 
         public decimal Allocated { get; set; }
@@ -27,24 +27,18 @@ namespace BudgetApp
             get { return Allocated; }
         }
 
-        List<Expenditure> expenditures;
+        public List<Expenditure> Expenditures;
 
         public void AddExpenditure(Expenditure expenditure)
         {
-            if (expenditure.Validate())
-            {
-                expenditures.Add(expenditure);
-                Amount -= expenditure.Amount;
-            }
+            Expenditures.Add(expenditure);
+            Amount -= expenditure.Amount;
         }
 
         public void RemoveExpenditure(Expenditure expenditure)
         {
-            if (expenditure.Validate())
-            {
-                expenditures.Remove(expenditure);
-                Amount += expenditure.Amount;
-            }
+            Expenditures.Remove(expenditure);
+            Amount += expenditure.Amount;
         }
 
         public Android.Graphics.Color GetColor()
@@ -62,11 +56,10 @@ namespace BudgetApp
             return color;
         }
         
-
         public void Reset()
         {
             Amount = Allocated;
-            expenditures.Clear();
+            Expenditures.Clear();
         }
     }
 }

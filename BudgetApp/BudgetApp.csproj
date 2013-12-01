@@ -71,6 +71,7 @@
     </Compile>
     <Compile Include="Adapters\BudgetItemListAdapter.cs" />
     <Compile Include="Adapters\BudgetItemSetupListAdapter.cs" />
+    <Compile Include="Adapters\ExpenditureAdapter.cs" />
     <Compile Include="Adapters\SetupListExpenditureAdapter.cs" />
     <Compile Include="UIExtensions\CustomScrollView.cs" />
     <Compile Include="UIExtensions\UIExtensions.cs" />
@@ -142,6 +143,11 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\BudgetDetail.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Layout\Expenditure.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>

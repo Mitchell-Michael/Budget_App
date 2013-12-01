@@ -15,7 +15,7 @@ namespace BudgetApp
     public class OverviewActivity : Activity
     {
         ListView _list;
-        TextView _bills, _remaining;
+        TextView _net, _bills, _remaining;
         private BudgetViewModel _budgetViewModel = ServiceContainer.Resolve<BudgetViewModel>();
 
         protected override void OnCreate(Bundle bundle)
@@ -24,6 +24,7 @@ namespace BudgetApp
 
             SetContentView(Resource.Layout.Overview);
 
+            _net = FindViewById<TextView>(Resource.Id.Overview_Income);
             _bills = FindViewById<TextView>(Resource.Id.BudgetBillTotal);
 
             _remaining = FindViewById<TextView>(Resource.Id.BudgetRemaining);
@@ -35,14 +36,24 @@ namespace BudgetApp
 
             _list = FindViewById<ListView>(Resource.Id.BudgetList);
             _list.Adapter = new BudgetItemListAdapter(this);
+
+            _list.ItemClick += (sender, e) =>
+            {
+                Intent intent = new Intent(this, typeof(DetailActivity));
+                intent.PutExtra("position", e.Position);
+                StartActivity(intent);
+            };
         }
 
         protected override void OnResume()
         {
             base.OnResume();
 
+            _net.Text = _budgetViewModel.NetIncome.Value.ToString("C");
             _bills.Text = _budgetViewModel.MonthlyBills.Sum(t => t.Amount).ToString("C");
             _remaining.Text = _budgetViewModel.RemainingTotal.ToString("C");
+
+            _list.Adapter = new BudgetItemListAdapter(this);
         }
 
         public void OnNetIncomeChanged()

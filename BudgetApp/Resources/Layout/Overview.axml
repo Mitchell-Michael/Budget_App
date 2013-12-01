@@ -14,6 +14,31 @@
         android:textSize="@dimen/TextSize"
         android:textColor="@android:color/black" />
     <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="@dimen/TextSize"
+            android:textColor="@android:color/black"
+            android:text="NetIncome" />
+        <TextView
+            android:id="@+id/Overview_Income"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="@dimen/TextSize"
+            android:textColor="@android:color/black" />
+    </LinearLayout>
+    <LinearLayout
         android:id="@+id/SetupLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

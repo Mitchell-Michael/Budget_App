@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/white">
+    <TextView
+        android:id="@+id/Expenditure_Date"
+        android:layout_width="0px"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="5dp"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/TextSize"
+        android:singleLine="true"
+        android:maxLines="1" />
+    <TextView
+        android:id="@+id/Expenditure_Name"
+        android:layout_width="0px"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="5dp"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/TextSize"
+        android:singleLine="true"
+        android:maxLines="1" />
+    <TextView
+        android:id="@+id/Expenditure_Amount"
+        android:layout_width="0px"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/TextSize"
+        android:singleLine="true"
+        android:maxLines="1" />
+</LinearLayout>
