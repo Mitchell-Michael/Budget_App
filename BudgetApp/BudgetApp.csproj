@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\SettingsActivity.cs" />
     <Compile Include="Activities\DetailActivity.cs" />
     <Compile Include="Activities\SetupBudgetActivity.cs" />
     <Compile Include="Activities\SplashActivity.cs" />
@@ -109,15 +110,21 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\Drawable\Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Properties\AndroidManifest.xml" />
-    <AndroidResource Include="Resources\Drawable\NewItem.png" />
     <AndroidResource Include="Resources\Values\Colors.xml" />
     <AndroidResource Include="Resources\Drawable\GreenButtonSelector.xml" />
     <AndroidResource Include="Resources\Drawable\RedButtonSelector.xml" />
     <AndroidResource Include="Resources\Drawable\BlackButtonSelector.xml" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_action_settings.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_action_settings.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_action_settings.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_settings.png" />
+    <AndroidResource Include="Resources\Menu\OverviewMenu.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\drawable-ldpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_launcher.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_launcher.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="json.net">
@@ -148,6 +155,16 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\Expenditure.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Layout\Settings.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Layout\Splash.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>

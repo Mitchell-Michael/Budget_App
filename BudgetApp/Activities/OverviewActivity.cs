@@ -11,7 +11,7 @@ using System.Collections.Generic;
 
 namespace BudgetApp
 {
-    [Activity(Label = "Budget App", LaunchMode=Android.Content.PM.LaunchMode.SingleInstance, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait, WindowSoftInputMode = SoftInput.StateHidden, Icon = "@drawable/icon")]
+    [Activity(Label = "Overview", LaunchMode=Android.Content.PM.LaunchMode.SingleInstance, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait, WindowSoftInputMode = SoftInput.StateHidden, Icon = "@drawable/ic_launcher")]
     public class OverviewActivity : Activity
     {
         LinearLayout _headers;
@@ -24,6 +24,7 @@ namespace BudgetApp
             base.OnCreate(bundle);
 
             SetContentView(Resource.Layout.Overview);
+
 
             _headers = FindViewById<LinearLayout>(Resource.Id.Overview_Headers);
 
@@ -75,6 +76,21 @@ namespace BudgetApp
             ((BudgetItemListAdapter)_list.Adapter).NotifyDataSetInvalidated();
             _bills.Text = _budgetViewModel.MonthlyBills.Sum(t => t.Amount).ToString("C");
             _remaining.Text = _budgetViewModel.RemainingTotal.ToString("C");
+        }
+
+        public override bool OnCreateOptionsMenu(IMenu menu)
+        {
+            MenuInflater.Inflate(Resource.Menu.OverviewMenu, menu);
+            return base.OnCreateOptionsMenu(menu);
+        }
+
+        public override bool OnMenuItemSelected(int featureId, IMenuItem item)
+        {
+            if (item.ItemId == Resource.Id.Action_Settings)
+            {
+                StartActivity(typeof(SettingsActivity));
+            }
+            return base.OnMenuItemSelected(featureId, item);
         }
     }
 }

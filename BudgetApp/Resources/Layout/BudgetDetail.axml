@@ -4,27 +4,50 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@android:color/white">
-    <EditText
-        android:id="@+id/Detail_Name"
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:textStyle="bold"
-        android:textSize="@dimen/TextSize"
-        android:textColor="@android:color/black"
-        android:longClickable="true"
-        android:enabled="false" />
-    <EditText
-        android:id="@+id/Detail_Allocated"
+        android:layout_marginTop="10dp">
+        <TextView
+            android:id="@+id/Detail_Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="@dimen/TextSize"
+            android:textColor="@android:color/black" />
+        <EditText
+            android:id="@+id/Detail_EditName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="@dimen/TextSize"
+            android:textColor="@android:color/black"
+            android:selectAllOnFocus="true"
+            android:visibility="gone" />
+    </FrameLayout>
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:textSize="@dimen/TextSize"
-        android:textColor="@android:color/black"
-        android:longClickable="true"
-        android:enabled="false" />
+        android:layout_marginTop="10dp">
+        <TextView
+            android:id="@+id/Detail_Allocated"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="@dimen/TextSize"
+            android:textColor="@android:color/black" />
+        <EditText
+            android:id="@+id/Detail_EditAllocated"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="@dimen/TextSize"
+            android:textColor="@android:color/black"
+            android:selectAllOnFocus="true"
+            android:visibility="gone" />
+    </FrameLayout>
     <LinearLayout
         android:id="@+id/Detail_Headers"
         android:orientation="horizontal"

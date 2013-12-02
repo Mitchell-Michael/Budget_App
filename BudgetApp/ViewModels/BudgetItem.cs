@@ -76,12 +76,14 @@ namespace BudgetApp
             {
                 decimal green = (int)(255m * Remaining / Allocated);
                 if (green > 255) green = 255;
+                else if (green < 0) green = 0;
                 color = new Android.Graphics.Color(0, (int)green, 0);
             }
             else
             {
                 decimal red = Remaining == 0 ? 0m : 255m * Allocated / Math.Abs(Remaining);
                 if (red < 0) red = 0;
+                else if (red > 255) red = 255;
                 color = new Android.Graphics.Color((int)red, 0, 0);
             }
             return color;

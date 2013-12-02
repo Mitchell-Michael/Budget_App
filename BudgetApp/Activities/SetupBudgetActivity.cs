@@ -12,7 +12,7 @@ using Android.Widget;
 
 namespace BudgetApp
 {
-    [Activity(Label = "Setup Budget", LaunchMode = Android.Content.PM.LaunchMode.SingleInstance, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait, WindowSoftInputMode = SoftInput.StateHidden | SoftInput.AdjustPan)]
+    [Activity(Label = "Setup Budget", LaunchMode = Android.Content.PM.LaunchMode.SingleInstance, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait, WindowSoftInputMode = SoftInput.StateHidden | SoftInput.AdjustPan, Icon = "@drawable/ic_launcher")]
     public class SetupBudgetActivity : Activity
     {
         private ListView _setupList;
@@ -21,6 +21,7 @@ namespace BudgetApp
         private Button _add, _delete;
         private LinearLayout _rootLayout;
         private string _lastText = string.Empty;
+        private List<Expenditure> _tempExpenditures = null;
 
         private readonly BudgetViewModel _budgetViewModel = ServiceContainer.Resolve<BudgetViewModel>();
 
@@ -56,6 +57,7 @@ namespace BudgetApp
 
                 _addName.Text = bill.Name;
                 _addAmount.Text = bill.Allocated.ToString();
+                _tempExpenditures = bill.Expenditures;
                 _addName.RequestFocus();
             };
 
@@ -68,14 +70,23 @@ namespace BudgetApp
                     if (!string.IsNullOrEmpty(_addName.Text))
                     {
                         BudgetItem bill = new BudgetItem() { Name = _addName.Text, Allocated = d };
+                        if (_tempExpenditures != null)
+                        {
+                            foreach (var expenditure in _tempExpenditures)
+                            {
+                                bill.AddExpenditure(expenditure);
+                            }
+                        }
                         var bills = _budgetViewModel.BudgetItems;
                         bills.Add(bill);
+
                         _budgetViewModel.BudgetItems = bills;
 
                         OnBudgetChanged();
 
                         _addName.Text = string.Empty;
                         _addAmount.Text = string.Empty;
+                        _tempExpenditures = null;
                         _addName.RequestFocus();
                     }
                 }
@@ -90,6 +101,7 @@ namespace BudgetApp
             {
                 _addName.Text = string.Empty;
                 _addAmount.Text = string.Empty;
+                _tempExpenditures = null;
             };
 
             _savings = FindViewById<TextView>(Resource.Id.Budget_Remaining);
@@ -100,6 +112,13 @@ namespace BudgetApp
             {
                 StartActivity(typeof(OverviewActivity));
             };
+
+            if (!(_budgetViewModel.BudgetItems == null || _budgetViewModel.BudgetItems.Count == 0))
+            {
+                Title = "Edit Budget";
+                ActionBar.SetDisplayHomeAsUpEnabled(true);
+                FindViewById<Button>(Resource.Id.Budget_Done).Visibility = ViewStates.Gone;
+            }
         }
 
         protected override void OnResume()
@@ -124,6 +143,15 @@ namespace BudgetApp
             c -= _budgetViewModel.MonthlyBills.Sum(t => t.Amount);
             c -= _budgetViewModel.BudgetItems.Sum(t => t.Allocated);
             _savings.Text = c.ToString("C");
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            if (item.ItemId == Android.Resource.Id.Home)
+            {
+                OnBackPressed();
+            }
+            return base.OnOptionsItemSelected(item);
         }
     }
 }

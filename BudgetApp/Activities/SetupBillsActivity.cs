@@ -12,7 +12,7 @@ using Android.Widget;
 
 namespace BudgetApp
 {
-    [Activity(Label = "Setup Budget", LaunchMode = Android.Content.PM.LaunchMode.SingleInstance, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait, WindowSoftInputMode = SoftInput.StateHidden | SoftInput.AdjustPan)]
+    [Activity(Label = "Setup Budget", LaunchMode = Android.Content.PM.LaunchMode.SingleInstance, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait, WindowSoftInputMode = SoftInput.StateHidden | SoftInput.AdjustPan, Icon = "@drawable/ic_launcher")]
     public class SetupBillsActivity : Activity
     {
         private ListView _setupList;
@@ -31,6 +31,20 @@ namespace BudgetApp
             base.OnCreate(bundle);
 
             SetContentView(Resource.Layout.Setup);
+
+            _continue = FindViewById<Button>(Resource.Id.Setup_Done);
+            _continue.Click += delegate
+            {
+                StartActivity(typeof(SetupBudgetActivity));
+            };
+
+            if (!(_budgetViewModel.BudgetItems == null || _budgetViewModel.BudgetItems.Count == 0))
+            {
+                Title = "Edit Bills";
+                ActionBar.SetDisplayHomeAsUpEnabled(true);
+                _continue.Visibility = ViewStates.Gone;
+
+            }
 
             _rootLayout = FindViewById<LinearLayout>(Resource.Id.Setup_RootLayout);
 
@@ -121,11 +135,6 @@ namespace BudgetApp
                         }
                     }
                 };
-            _continue = FindViewById<Button>(Resource.Id.Setup_Done);
-            _continue.Click += delegate
-            {
-                StartActivity(typeof(SetupBudgetActivity));
-            };
         }
 
         protected override void OnResume()
@@ -165,6 +174,15 @@ namespace BudgetApp
 
             c -= _budgetViewModel.MonthlyBills.Sum(t => t.Amount);
             _remaining.Text = c.ToString("C");
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            if (item.ItemId == Android.Resource.Id.Home)
+            {
+                OnBackPressed();
+            }
+            return base.OnOptionsItemSelected(item);
         }
     }
 }

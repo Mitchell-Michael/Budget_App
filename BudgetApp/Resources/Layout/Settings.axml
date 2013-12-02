@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/white">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:text="Options"
+        android:textStyle="bold"
+        android:textSize="@dimen/TextSize"
+        android:textColor="@android:color/black" />
+    <Button
+        android:id="@+id/Settings_Bills"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_gravity="center"
+        android:background="@drawable/BlackButtonSelector"
+        android:text="Edit Bills"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/TextSize" />
+    <Button
+        android:id="@+id/Settings_Budget"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_gravity="center"
+        android:background="@drawable/BlackButtonSelector"
+        android:text="Edit Budget"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/TextSize" />
+</LinearLayout>
